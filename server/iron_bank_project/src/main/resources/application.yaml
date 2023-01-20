@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/iron_bank
+    username: ironhacker
+    password: 1r0nh4ck3r
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  profiles:
+    active: demo
+
+cryptocolleagues:
+  app:
+    jwtCookieName: ironBank
+    jwtSecret: ironBank
+    jwtExpirationMs: 86400000
