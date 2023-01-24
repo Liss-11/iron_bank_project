@@ -10,9 +10,3 @@ spring:
       ddl-auto: create
   profiles:
     active: demo
-
-ironbank:
-  app:
-    jwtCookieName: ironBank
-    jwtSecret: ironBank
-    jwtExpirationMs: 86400000
