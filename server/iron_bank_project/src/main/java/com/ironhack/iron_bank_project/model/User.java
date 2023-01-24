@@ -6,13 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "password")
     })
 @Data
@@ -24,8 +22,12 @@ public abstract class User {
 
     @NotBlank
     @Size(max = 30)
-    @Column(name="username")
     private String name;
+
+    @NotBlank
+    @Size(max = 30)
+    //add an email patter
+    private String email;
 
     @NotBlank
     @Size(max = 120)
@@ -37,8 +39,9 @@ public abstract class User {
 
     public User(){}
 
-    public User(String name, String password, RoleEnum role){
+    public User(String name, String email, String password, RoleEnum role){
         setName(name);
+        setEmail(email);
         setPassword(password);
         setRole(role);
     }

@@ -17,13 +17,13 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${cryptocolleagues.app.jwtSecret}")
+    @Value("${ironbank.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${cryptocolleagues.app.jwtExpirationMs}")
+    @Value("${ironbank.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${cryptocolleagues.app.jwtCookieName}")
+    @Value("${ironbank.app.jwtCookieName}")
     private String jwtCookie;
 
     public String getJwtFromCookies(HttpServletRequest request) {
@@ -35,8 +35,8 @@ public class JwtUtils {
         }
     }
 
-    public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    public ResponseCookie generateJwtCookie(UserDetailsImpl user) {
+        String jwt = generateTokenFromUsername(user.getUsername());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
         return cookie;
     }
