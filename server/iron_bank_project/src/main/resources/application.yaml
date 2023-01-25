@@ -10,3 +10,8 @@ spring:
       ddl-auto: create
   profiles:
     active: demo
+
+iron_bank:
+  app:
+    jwtSecretKey: "67566B59703373367638792F423F4528482B4D6251655468576D5A7134743777"
+    jwtExpirationMs: 86400000000

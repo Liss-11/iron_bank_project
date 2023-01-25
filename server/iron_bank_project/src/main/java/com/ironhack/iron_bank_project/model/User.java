@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 
 @Entity
@@ -33,9 +36,11 @@ public abstract class User {
     @Size(max = 120)
     private String password;
 
-    //@ManyToOne
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
+
+    @CreationTimestamp
+    private Instant createdAt;
 
     public User(){}
 
