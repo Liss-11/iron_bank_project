@@ -2,10 +2,7 @@ package com.ironhack.iron_bank_project.model;
 
 import com.ironhack.iron_bank_project.enums.RoleEnum;
 import jakarta.persistence.Entity;
-import lombok.Data;
-
 @Entity
-@Data
 public class Admin extends User{
 
     public Admin(){}

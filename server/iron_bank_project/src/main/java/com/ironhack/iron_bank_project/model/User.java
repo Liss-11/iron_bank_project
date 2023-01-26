@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 
@@ -16,9 +17,8 @@ import java.time.Instant;
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "password")
     })
-@Data
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -33,7 +33,7 @@ public abstract class User {
     private String email;
 
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 200)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +49,46 @@ public abstract class User {
         setEmail(email);
         setPassword(password);
         setRole(role);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
 }

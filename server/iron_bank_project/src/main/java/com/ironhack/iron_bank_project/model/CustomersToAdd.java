@@ -2,22 +2,24 @@ package com.ironhack.iron_bank_project.model;
 
 import com.ironhack.iron_bank_project.enums.RoleEnum;
 import com.ironhack.iron_bank_project.utils.Address;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Entity
-public class Customer extends User{
+public class CustomersToAdd extends User{
 
     private LocalDate dateOfBirth;
 
     @Embedded
     private Address primaryAddress;
 
-    public Customer(){}
+    public CustomersToAdd(){}
 
-    public Customer(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress){
+    public CustomersToAdd(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress){
         super(name, email, password, RoleEnum.USER);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);

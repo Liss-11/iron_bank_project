@@ -7,7 +7,6 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,7 @@ public class JwtService {
     //to log info in console and in the HTML if is necessary
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-
-    // private final static String SECRET_KEY = "67566B59703373367638792F423F4528482B4D6251655468576D5A7134743777";
-
-    @Value("${iron_bank.app.jwtSecret}")
-    private String jwtSecretKey;
-
-    @Value("${cryptocolleagues.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final static String SECRET_KEY = "67566B59703373367638792F423F4528482B4D6251655468576D5A7134743777";
 
 
     //The returned "subject" is our email (identifier we use for "username")
@@ -53,7 +45,7 @@ public class JwtService {
     }
 
     private Key singnInKey() {
-        byte[] keyBites = Decoders.BASE64.decode(jwtSecretKey);
+        byte[] keyBites = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBites);
     }
 
@@ -77,10 +69,11 @@ public class JwtService {
 
     //The username is the email
     public String generateTokenFromUsername(UserDetails userDetails) {
+        long expiration_mms = 86400000000L;
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .setExpiration(new Date((new Date()).getTime() + expiration_mms))
                 .signWith(singnInKey(), SignatureAlgorithm.ES256)
                 .compact();
     }
