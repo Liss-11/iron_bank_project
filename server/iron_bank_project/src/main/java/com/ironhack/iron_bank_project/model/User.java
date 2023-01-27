@@ -1,6 +1,7 @@
 package com.ironhack.iron_bank_project.model;
 
 import com.ironhack.iron_bank_project.enums.RoleEnum;
+import com.ironhack.iron_bank_project.enums.StatusEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -39,16 +40,20 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
+
     @CreationTimestamp
     private Instant createdAt;
 
     public User(){}
 
-    public User(String name, String email, String password, RoleEnum role){
+    public User(String name, String email, String password, RoleEnum role, StatusEnum status){
         setName(name);
         setEmail(email);
         setPassword(password);
         setRole(role);
+        setStatus(status);
     }
 
     public String getId() {
@@ -87,8 +92,31 @@ public class User {
         this.role = role;
     }
 
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt() {
+        this.createdAt = Instant.now();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                " name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

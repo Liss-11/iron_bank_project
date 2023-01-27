@@ -1,7 +1,9 @@
 package com.ironhack.iron_bank_project.demo;
 
-import com.ironhack.iron_bank_project.enums.RoleEnum;
+import com.ironhack.iron_bank_project.enums.StatusEnum;
+import com.ironhack.iron_bank_project.model.Admin;
 import com.ironhack.iron_bank_project.model.Customer;
+import com.ironhack.iron_bank_project.model.ThirdParty;
 import com.ironhack.iron_bank_project.repository.UserRepository;
 import com.ironhack.iron_bank_project.utils.Address;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +34,21 @@ public class DataLouder {
 
     public void loadDataUsers(){
 
-        var address = new Address("Congrés", "Barcelona", "08031", "Spain");
-        var user = new Customer();
-        user.setName("alissia");
-        user.setEmail("frolova.alissia@gmail.com");
-        user.setPassword(passwordEncoder.encode("Mushu0311"));
-        user.setDateOfBirth(LocalDate.parse("1992-04-11"));
-        user.setRole(RoleEnum.USER);
-        user.setPrimaryAddress(address);
-        userRepository.save(user);
+        var address1 = new Address("Peralada", "Figueres", "17600", "Spain");
+        var user1 = new Customer("antonio", "antonio@delcastillo.com", passwordEncoder.encode("Antonio123"),
+                LocalDate.parse("1992-04-11"), address1, StatusEnum.ACTIVE);
+      //  user1.setRole(RoleEnum.USER);
+       // user1.setStatus(StatusEnum.ACTIVE);
+        userRepository.save(user1);
+
+        var user2 = new Admin("alissia", "frolova.alissia@gmail.com", passwordEncoder.encode("Mushu0311"));
+     //   user2.setRole(RoleEnum.ADMIN);
+      //  user2.setStatus(StatusEnum.ACTIVE);
+        userRepository.save(user2);
+
+        var user3 = new ThirdParty("Ara", "ara@gossa.com", passwordEncoder.encode("araLoka."), "araLoka", StatusEnum.ACTIVE);
+        userRepository.save(user3);
+
 
     }
 

@@ -1,5 +1,6 @@
 package com.ironhack.iron_bank_project.security.jwt;
 
+import com.ironhack.iron_bank_project.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class JwtService {
     //to log info in console and in the HTML if is necessary
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-    private final static String SECRET_KEY = "67566B59703373367638792F423F4528482B4D6251655468576D5A7134743777";
+    private final static String SECRET_KEY = "7336763979244226452948404D635166546A576D5A7134743777217A25432A462D4A614E645267556B58703272357538782F413F4428472B4B6250655368566D";
 
 
     //The returned "subject" is our email (identifier we use for "username")
@@ -38,13 +40,13 @@ public class JwtService {
     private Claims extractAllClaims(String token){
         return Jwts
                 .parserBuilder()
-                .setSigningKey(singnInKey())
+                .setSigningKey(signInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    private Key singnInKey() {
+    private Key signInKey() {
         byte[] keyBites = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBites);
     }
@@ -74,7 +76,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration_mms))
-                .signWith(singnInKey(), SignatureAlgorithm.ES256)
+                .signWith(SignatureAlgorithm.HS512, signInKey())
                 .compact();
     }
 }

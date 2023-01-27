@@ -1,10 +1,14 @@
 package com.ironhack.iron_bank_project.model;
 
+import com.ironhack.iron_bank_project.dtoRequest.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.RoleEnum;
+import com.ironhack.iron_bank_project.enums.StatusEnum;
 import com.ironhack.iron_bank_project.utils.Address;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDate;
 
 @Entity
@@ -17,10 +21,19 @@ public class Customer extends User{
 
     public Customer(){}
 
-    public Customer(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress){
-        super(name, email, password, RoleEnum.USER);
+    public Customer(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress, StatusEnum status){
+        super(name, email, password, RoleEnum.ROLE_USER, status);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
+    }
+
+    public static Customer fromRegisterCustomerRequest(RegisterCustomerRequest request){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        var customer = new Customer(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()),
+                LocalDate.parse(request.getDateOfBirth()),
+                new Address(request.getStreet(), request.getCity(), request.getPostalCode(), request.getCountry()), StatusEnum.PENDENT);
+        return customer;
     }
 
     public LocalDate getDateOfBirth() {

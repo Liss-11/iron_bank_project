@@ -1,16 +1,10 @@
 package com.ironhack.iron_bank_project.dtoRequest;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegisterRequest {
+public class RegisterCustomerRequest {
 
     @NotBlank(message = "Name must not be blank")
     @Size(max = 30)
@@ -42,4 +36,18 @@ public class RegisterRequest {
 
     @NotBlank(message = "Country must not be blank")
     private String country;
+
+    public RegisterCustomerRequest() {
+    }
+
+    public RegisterCustomerRequest(String name, String email, String password, String dateOfBirth, String street, String city, String postalCode, String country) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
 }
