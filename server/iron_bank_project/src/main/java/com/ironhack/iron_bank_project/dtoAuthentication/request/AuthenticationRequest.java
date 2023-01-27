@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.dtoRequest;
+package com.ironhack.iron_bank_project.dtoAuthentication.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

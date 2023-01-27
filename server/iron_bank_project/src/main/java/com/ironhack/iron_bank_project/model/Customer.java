@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.model;
 
-import com.ironhack.iron_bank_project.dtoRequest.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.RoleEnum;
 import com.ironhack.iron_bank_project.enums.StatusEnum;
 import com.ironhack.iron_bank_project.utils.Address;
@@ -30,10 +30,9 @@ public class Customer extends User{
     public static Customer fromRegisterCustomerRequest(RegisterCustomerRequest request){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        var customer = new Customer(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()),
+        return new Customer(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()),
                 LocalDate.parse(request.getDateOfBirth()),
                 new Address(request.getStreet(), request.getCity(), request.getPostalCode(), request.getCountry()), StatusEnum.PENDENT);
-        return customer;
     }
 
     public LocalDate getDateOfBirth() {

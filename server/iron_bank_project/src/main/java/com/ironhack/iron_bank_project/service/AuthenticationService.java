@@ -1,19 +1,18 @@
 package com.ironhack.iron_bank_project.service;
 
-import com.ironhack.iron_bank_project.dtoRequest.AuthenticationRequest;
-import com.ironhack.iron_bank_project.dtoRequest.RegisterCustomerRequest;
-import com.ironhack.iron_bank_project.dtoResponse.AuthenticationResponse;
-import com.ironhack.iron_bank_project.enums.RoleEnum;
+import com.ironhack.iron_bank_project.dtoAuthentication.request.AuthenticationRequest;
+import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.StatusEnum;
 import com.ironhack.iron_bank_project.exception.CustomerWithEmailAlreadyExistsException;
+import com.ironhack.iron_bank_project.model.Admin;
 import com.ironhack.iron_bank_project.model.Customer;
-import com.ironhack.iron_bank_project.model.User;
 import com.ironhack.iron_bank_project.repository.UserRepository;
 import com.ironhack.iron_bank_project.security.UserDetailsImpl;
 import com.ironhack.iron_bank_project.security.jwt.JwtService;
-import com.ironhack.iron_bank_project.utils.Address;
-import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,18 +22,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
 
@@ -47,36 +41,37 @@ public class AuthenticationService {
    // public AuthenticationResponse registerCustomer(RegisterCustomerRequest request){
     public ResponseEntity<?> registerCustomer (RegisterCustomerRequest request){
 
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+                .contains(new SimpleGrantedAuthority("ROLE_USER")) ||
+                SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+                        .contains(new SimpleGrantedAuthority("ROLE_THIRDPARTY"))){
+            return ResponseEntity.badRequest().body("You must SignOut in order to create a New User");
+        }
+
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new CustomerWithEmailAlreadyExistsException();
         }
-
         var customer = Customer.fromRegisterCustomerRequest(request);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
             customer.setStatus(StatusEnum.ACTIVE);
         }
-
-        System.out.println(customer.toString());
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-
-        UserDetails userDetails = UserDetailsImpl.build((User) customer);
-
-        System.out.println(userDetails.getUsername());
-
         userRepository.save(customer);
 
-        //var jwtToken = jwtService.generateTokenFromUsername(userDetails);
-
         return ResponseEntity.ok("User registered successfully!");
+    }
 
+    public ResponseEntity<?> registerAdmin(RegisterAdminRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new CustomerWithEmailAlreadyExistsException();
+        }
+        var customer = Admin.fromRegisterAdminRequest(request);
+        userRepository.save(customer);
 
-        //return new AuthenticationResponse(jwtToken);
+        return ResponseEntity.ok("Admin registered successfully!");
     }
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public ResponseEntity<?> authenticate(AuthenticationRequest request) {
         Authentication authentication =  authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -86,36 +81,19 @@ public class AuthenticationService {
         }
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        System.out.println(userDetails.getAuthorities());
+        ResponseCookie jwtCookie = jwtService.generateJwtCookie(userDetails);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        var jwtToken = jwtService.generateTokenFromUsername(user);
-
-        return new AuthenticationResponse(jwtToken);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(userDetails.getUsername());
 
     }
 
-    /*
-    *  Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public ResponseEntity<?> logout() {
+        ResponseCookie cookie = jwtService.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body("You've been signed out!");
+    }
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles));*/
 
 }
