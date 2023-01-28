@@ -14,7 +14,7 @@ public class ConstraintViolationRestControllerAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ValidationError> handleException(MethodArgumentNotValidException ex) {
+    public List<ConstraintErrorMessage> handleException(MethodArgumentNotValidException ex) {
         return ex.getBindingResult()
                 .getAllErrors()
                 .stream()
@@ -22,11 +22,11 @@ public class ConstraintViolationRestControllerAdvice {
                 .collect(Collectors.toList());
     }
 
-    private ValidationError mapError(ObjectError objectError) {
+    private ConstraintErrorMessage mapError(ObjectError objectError) {
         if (objectError instanceof FieldError) {
-            return new ValidationError(((FieldError) objectError).getField(),
+            return new ConstraintErrorMessage(((FieldError) objectError).getField(),
                     objectError.getDefaultMessage());
         }
-        return new ValidationError(objectError.getObjectName(), objectError.getDefaultMessage());
+        return new ConstraintErrorMessage(objectError.getObjectName(), objectError.getDefaultMessage());
     }
 }

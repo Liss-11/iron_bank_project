@@ -1,9 +1,9 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.dtoAuthentication.request.AuthenticationRequest;
-import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterAdminRequest;
-import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterCustomerRequest;
-import com.ironhack.iron_bank_project.service.AuthenticationService;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.AuthenticationRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.users.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
+
 
     @PostMapping(value = "/register/customer", consumes = "application/json")
     public ResponseEntity<?> registerCustomer(
@@ -32,13 +33,7 @@ public class AuthController {
         return authenticationService.registerAdmin(request);
     }
 
-    /* @PostMapping(value = "/register/customer", consumes = "application/json")
-    public ResponseEntity<AuthenticationResponse> registerThirdParty(
-            @Valid @RequestBody RegisterThirdPartyRequest request
-    ){
-        return ResponseEntity.ok(authenticationService.registerThirdParty(request));
 
-    }*/
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(

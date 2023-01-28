@@ -1,6 +1,7 @@
 package com.ironhack.iron_bank_project.validation;
 
-import com.ironhack.iron_bank_project.exception.CustomerWithEmailAlreadyExistsException;
+import com.ironhack.iron_bank_project.exception.UserNotFoundException;
+import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,18 +16,31 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    //Error response in case the "findById" POST (prom Post model)doesn't exist
-    @ExceptionHandler(CustomerWithEmailAlreadyExistsException.class)
-    public ResponseEntity<Object> CustomerWithEmailAlreadyExistsException
+    @ExceptionHandler(UserWithEmailAlreadyExistsException.class)
+    public ResponseEntity<Object> UserWithEmailAlreadyExistsException
     (
-            CustomerWithEmailAlreadyExistsException ex, WebRequest request) {
+            UserWithEmailAlreadyExistsException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDate.now().toString());
-        body.put("message", "A user with this email already exists");
+        body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> UserNotFoundException
+            (
+                    UserNotFoundException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now().toString());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+
 
 }
 

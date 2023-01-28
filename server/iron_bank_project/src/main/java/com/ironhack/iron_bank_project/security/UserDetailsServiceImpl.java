@@ -1,10 +1,9 @@
 package com.ironhack.iron_bank_project.security;
 
-import com.ironhack.iron_bank_project.model.User;
-import com.ironhack.iron_bank_project.repository.UserRepository;
+import com.ironhack.iron_bank_project.users.model.User;
+import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,7 +1,7 @@
 package com.ironhack.iron_bank_project.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ironhack.iron_bank_project.model.User;
+import com.ironhack.iron_bank_project.users.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

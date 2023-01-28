@@ -1,6 +1,6 @@
-package com.ironhack.iron_bank_project.model;
+package com.ironhack.iron_bank_project.users.model;
 
-import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.RoleEnum;
 import com.ironhack.iron_bank_project.enums.StatusEnum;
 import com.ironhack.iron_bank_project.utils.Address;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 
 @Entity
-public class Customer extends User{
+public class Customer extends User {
 
     private LocalDate dateOfBirth;
 

@@ -1,15 +1,15 @@
-package com.ironhack.iron_bank_project.model;
+package com.ironhack.iron_bank_project.users.model;
 
 import com.ironhack.iron_bank_project.enums.RoleEnum;
 import com.ironhack.iron_bank_project.enums.StatusEnum;
+import com.ironhack.iron_bank_project.accounts.Account;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Entity
@@ -19,7 +19,7 @@ import java.time.Instant;
         @UniqueConstraint(columnNames = "password")
     })
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -45,6 +45,14 @@ public class User {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "primaryOwner", cascade = CascadeType.ALL)
+    private List<Account> myAccounts;
+
+    @OneToMany(mappedBy = "secondaryOwner", cascade = CascadeType.ALL)
+    private List<Account> myAccountsAsSeconday;
+
+
 
     public User(){}
 

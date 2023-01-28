@@ -1,6 +1,6 @@
-package com.ironhack.iron_bank_project.repository;
+package com.ironhack.iron_bank_project.users.repository;
 
-import com.ironhack.iron_bank_project.model.User;
+import com.ironhack.iron_bank_project.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

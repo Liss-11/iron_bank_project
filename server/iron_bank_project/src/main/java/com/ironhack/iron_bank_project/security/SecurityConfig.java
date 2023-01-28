@@ -1,16 +1,10 @@
 package com.ironhack.iron_bank_project.security;
 
-import com.ironhack.iron_bank_project.enums.RoleEnum;
-import com.ironhack.iron_bank_project.model.Customer;
-import com.ironhack.iron_bank_project.repository.UserRepository;
 import com.ironhack.iron_bank_project.security.jwt.JwtAuthEntryPoint;
 import com.ironhack.iron_bank_project.security.jwt.JwtAuthenticationFilter;
-import com.ironhack.iron_bank_project.utils.Address;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -52,8 +46,10 @@ public class SecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/iron_bank/auth/**").permitAll()
-                .requestMatchers("/iron_bank/demo").permitAll()
+                .requestMatchers("/iron_bank/**").permitAll()
+               // .requestMatchers("/iron_bank/auth/**").permitAll()
+               // .requestMatchers("/iron_bank/user/**").permitAll()
+               // .requestMatchers("/iron_bank/third-party/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

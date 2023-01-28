@@ -1,19 +1,17 @@
-package com.ironhack.iron_bank_project.service;
+package com.ironhack.iron_bank_project.users.service;
 
-import com.ironhack.iron_bank_project.dtoAuthentication.request.AuthenticationRequest;
-import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterAdminRequest;
-import com.ironhack.iron_bank_project.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.AuthenticationRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.StatusEnum;
-import com.ironhack.iron_bank_project.exception.CustomerWithEmailAlreadyExistsException;
-import com.ironhack.iron_bank_project.model.Admin;
-import com.ironhack.iron_bank_project.model.Customer;
-import com.ironhack.iron_bank_project.repository.UserRepository;
+import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
+import com.ironhack.iron_bank_project.users.model.Admin;
+import com.ironhack.iron_bank_project.users.model.Customer;
+import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import com.ironhack.iron_bank_project.security.UserDetailsImpl;
 import com.ironhack.iron_bank_project.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,14 +40,12 @@ public class AuthenticationService {
     public ResponseEntity<?> registerCustomer (RegisterCustomerRequest request){
 
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .contains(new SimpleGrantedAuthority("ROLE_USER")) ||
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                        .contains(new SimpleGrantedAuthority("ROLE_THIRDPARTY"))){
+                .contains(new SimpleGrantedAuthority("ROLE_USER"))){
             return ResponseEntity.badRequest().body("You must SignOut in order to create a New User");
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new CustomerWithEmailAlreadyExistsException();
+            throw new UserWithEmailAlreadyExistsException();
         }
         var customer = Customer.fromRegisterCustomerRequest(request);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
@@ -57,18 +53,20 @@ public class AuthenticationService {
         }
         userRepository.save(customer);
 
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Customer registered successfully!");
     }
 
     public ResponseEntity<?> registerAdmin(RegisterAdminRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new CustomerWithEmailAlreadyExistsException();
+            throw new UserWithEmailAlreadyExistsException();
         }
         var customer = Admin.fromRegisterAdminRequest(request);
         userRepository.save(customer);
 
-        return ResponseEntity.ok("Admin registered successfully!");
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Admin registered successfully!");
     }
+
+
 
 
     public ResponseEntity<?> authenticate(AuthenticationRequest request) {
