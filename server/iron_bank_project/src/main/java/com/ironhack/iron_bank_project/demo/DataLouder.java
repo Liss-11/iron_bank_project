@@ -1,6 +1,7 @@
 package com.ironhack.iron_bank_project.demo;
 
-import com.ironhack.iron_bank_project.enums.StatusEnum;
+import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
+import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.users.model.Admin;
 import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.model.ThirdParty;
@@ -26,10 +27,12 @@ public class DataLouder {
 
     private final  ThirdPartyRepository thirdPartyRepository;
 
+    private final AccountRepository accountRepository;
+
     @Bean
     public void loadFakeData(){
         try {
-            loadDataUsers();
+            loadDataAccounts();
         } catch (Exception e) {
             System.err.printf("Couldn't load fake data: %s\n", e.getMessage());
         }
@@ -39,14 +42,19 @@ public class DataLouder {
 
         var address1 = new Address("Peralada", "Figueres", "17600", "Spain");
         var user1 = new Customer("antonio", "antonio@delcastillo.com", passwordEncoder.encode("Antonio123"),
-                LocalDate.parse("1992-04-11"), address1, StatusEnum.ACTIVE);
+                LocalDate.parse("1992-04-11"), address1, UserStatus.ACTIVE);
         userRepository.save(user1);
 
         var user2 = new Admin("alissia", "frolova.alissia@gmail.com", passwordEncoder.encode("Mushu0311"));
         userRepository.save(user2);
 
-        var user3 = new ThirdParty("Ara", "ara@gossa.com", passwordEncoder.encode("araLoka."), StatusEnum.ACTIVE);
+        var user3 = new ThirdParty("Ara", "ara@gossa.com", passwordEncoder.encode("araLoka."), UserStatus.ACTIVE);
         thirdPartyRepository.save(user3);
+    }
+
+    public void loadDataAccounts(){
+        loadDataUsers();
+
     }
 
 

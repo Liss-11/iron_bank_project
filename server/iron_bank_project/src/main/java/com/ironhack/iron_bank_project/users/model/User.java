@@ -1,8 +1,8 @@
 package com.ironhack.iron_bank_project.users.model;
 
-import com.ironhack.iron_bank_project.enums.RoleEnum;
-import com.ironhack.iron_bank_project.enums.StatusEnum;
-import com.ironhack.iron_bank_project.accounts.Account;
+import com.ironhack.iron_bank_project.enums.Role;
+import com.ironhack.iron_bank_project.enums.UserStatus;
+import com.ironhack.iron_bank_project.accounts.model.Account;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -38,10 +38,10 @@ public abstract class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private Role role;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private UserStatus status;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -56,7 +56,7 @@ public abstract class User {
 
     public User(){}
 
-    public User(String name, String email, String password, RoleEnum role, StatusEnum status){
+    public User(String name, String email, String password, Role role, UserStatus status){
         setName(name);
         setEmail(email);
         setPassword(password);
@@ -92,19 +92,19 @@ public abstract class User {
         this.password = password;
     }
 
-    public RoleEnum getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public StatusEnum getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 

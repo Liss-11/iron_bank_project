@@ -1,20 +1,35 @@
 package com.ironhack.iron_bank_project.controller;
 
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.ChangeStatusRequest;
+import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.UpdateCustomerRequest;
 import com.ironhack.iron_bank_project.users.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/iron_bank/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable (name = "id") String id,
+                                        @Valid @RequestBody UpdateCustomerRequest request){
+        return userService.updateUser(id, request);
+    }
+
+    @PatchMapping("/change_status/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> changeStatus(@PathVariable (name = "id") String id,
+                                        @Valid @RequestBody ChangeStatusRequest request){
+        return userService.changeStatus(id, request);
+    }
+
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -24,22 +39,10 @@ public class UserController {
         return userService.deleteUserById(id);
     }
 
-    @DeleteMapping("/delete/customer")
+    @DeleteMapping("/delete/current_customer")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteActualCustomer(){
         return userService.deleteActualUser();
     }
-
-
-
-
-
-
-    //Borrar usuarios -> solo el admin
-
-    //Editar Usuarios -> solo el admin
-
-    //
-
 
 }

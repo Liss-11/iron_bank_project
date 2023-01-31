@@ -2,7 +2,7 @@ package com.ironhack.iron_bank_project.users.service;
 
 import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
 import com.ironhack.iron_bank_project.dtos.dtoAuthentication.respons.RegisterThirdPartyResponse;
-import com.ironhack.iron_bank_project.enums.StatusEnum;
+import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
 import com.ironhack.iron_bank_project.users.model.ThirdParty;
@@ -37,7 +37,7 @@ public class ThirdPartyService {
         ThirdParty entity = ThirdParty.fromRegisterThirdPartyRequest(request);
 
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
-            entity.setStatus(StatusEnum.ACTIVE);
+            entity.setStatus(UserStatus.ACTIVE);
         }
 
         thirdPartyRepository.save(entity);

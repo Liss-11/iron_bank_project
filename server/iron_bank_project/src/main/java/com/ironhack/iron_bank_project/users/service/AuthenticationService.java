@@ -3,7 +3,7 @@ package com.ironhack.iron_bank_project.users.service;
 import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.AuthenticationRequest;
 import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
 import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
-import com.ironhack.iron_bank_project.enums.StatusEnum;
+import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
 import com.ironhack.iron_bank_project.users.model.Admin;
 import com.ironhack.iron_bank_project.users.model.Customer;
@@ -49,7 +49,7 @@ public class AuthenticationService {
         }
         var customer = Customer.fromRegisterCustomerRequest(request);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
-            customer.setStatus(StatusEnum.ACTIVE);
+            customer.setStatus(UserStatus.ACTIVE);
         }
         userRepository.save(customer);
 
@@ -65,7 +65,6 @@ public class AuthenticationService {
 
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Admin registered successfully!");
     }
-
 
 
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/iron_bank/third-party")
+@RequestMapping("/api/third-party")
 public class ThirdPartyController {
 
     private final ThirdPartyService thirdPartyService;
