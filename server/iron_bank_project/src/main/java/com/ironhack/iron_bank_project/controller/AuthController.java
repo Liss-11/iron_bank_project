@@ -1,8 +1,8 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.AuthenticationRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.AuthenticationRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.users.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +32,6 @@ public class AuthController {
     ){
         return authenticationService.registerAdmin(request);
     }
-
-
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(

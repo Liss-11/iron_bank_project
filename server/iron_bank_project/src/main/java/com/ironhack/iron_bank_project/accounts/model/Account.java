@@ -1,5 +1,6 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
@@ -32,11 +33,11 @@ public abstract class Account {
     private AccountStatus status;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinTable(name = "owner_id")
     private User primaryOwner;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinTable(name = "secundary_owner_id")
     private User secondaryOwner;
 

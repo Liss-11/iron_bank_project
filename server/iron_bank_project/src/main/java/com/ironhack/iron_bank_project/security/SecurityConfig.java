@@ -22,8 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
         prePostEnabled = true)
 public class SecurityConfig {
 
@@ -50,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
                 .requestMatchers("/api/third-party/**").permitAll()
+                .requestMatchers("/api/account/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

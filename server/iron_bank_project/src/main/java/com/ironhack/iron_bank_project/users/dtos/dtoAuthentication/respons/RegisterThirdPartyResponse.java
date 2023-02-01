@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.dtos.dtoAuthentication.respons;
+package com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.respons;
 
 import lombok.Data;
 

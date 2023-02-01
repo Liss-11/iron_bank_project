@@ -1,11 +1,10 @@
 package com.ironhack.iron_bank_project.users.service;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.ChangeStatusRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.UpdateCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.ChangeStatusRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.UpdateCustomerRequest;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
 import com.ironhack.iron_bank_project.users.model.Customer;
-import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import com.ironhack.iron_bank_project.utils.Address;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

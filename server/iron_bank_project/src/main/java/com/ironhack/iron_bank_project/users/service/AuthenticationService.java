@@ -1,8 +1,8 @@
 package com.ironhack.iron_bank_project.users.service;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.AuthenticationRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.AuthenticationRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
 import com.ironhack.iron_bank_project.users.model.Admin;

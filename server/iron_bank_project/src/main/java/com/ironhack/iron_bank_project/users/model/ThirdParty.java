@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.users.model;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;

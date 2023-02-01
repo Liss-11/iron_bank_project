@@ -1,7 +1,7 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.ChangeStatusRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.UpdateCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.ChangeStatusRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.UpdateCustomerRequest;
 import com.ironhack.iron_bank_project.users.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

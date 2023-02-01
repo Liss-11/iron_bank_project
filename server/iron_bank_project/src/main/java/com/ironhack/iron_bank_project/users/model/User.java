@@ -1,5 +1,6 @@
 package com.ironhack.iron_bank_project.users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.accounts.model.Account;
@@ -47,9 +48,11 @@ public abstract class User {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "primaryOwner", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Account> myAccounts;
 
     @OneToMany(mappedBy = "secondaryOwner", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Account> myAccountsAsSeconday;
 
 

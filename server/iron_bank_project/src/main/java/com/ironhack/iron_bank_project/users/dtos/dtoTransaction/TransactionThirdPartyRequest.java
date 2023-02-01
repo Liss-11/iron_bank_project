@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.dtos.dtoTransaction;
+package com.ironhack.iron_bank_project.users.dtos.dtoTransaction;
 
 import com.ironhack.iron_bank_project.utils.Money;
 import lombok.Data;

@@ -1,11 +1,14 @@
 package com.ironhack.iron_bank_project.accounts;
 
-import com.ironhack.iron_bank_project.accounts.dto.CheckingAccountCreateRequest;
-import com.ironhack.iron_bank_project.accounts.model.Account;
+import com.ironhack.iron_bank_project.accounts.dto.request.CheckingAccountCreateRequest;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
+import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,12 +18,9 @@ public class AccountValidateService {
 
     private final Validator validator;
 
-    public boolean isCreationRequestValid(CheckingAccountCreateRequest request) {
-        //check user existence and status
 
-        //check user age -> between 0 and 120 (custom error) ------- in less than 18 (custom error)
-        return false;
-
+    public User isUserValid(String userId){
+        return validator.isUserValid(userId);
     }
 
 

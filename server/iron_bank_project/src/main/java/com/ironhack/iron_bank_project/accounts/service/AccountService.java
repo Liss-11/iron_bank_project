@@ -1,13 +1,16 @@
 package com.ironhack.iron_bank_project.accounts.service;
 
 import com.ironhack.iron_bank_project.accounts.AccountValidateService;
-import com.ironhack.iron_bank_project.accounts.dto.CheckingAccountCreateRequest;
-import com.ironhack.iron_bank_project.accounts.model.Account;
+import com.ironhack.iron_bank_project.accounts.dto.request.CheckingAccountCreateRequest;
+import com.ironhack.iron_bank_project.accounts.dto.request.SavingAccountCreateRequest;
+import com.ironhack.iron_bank_project.accounts.dto.response.AccountCreationResponse;
 import com.ironhack.iron_bank_project.accounts.model.CheckingAccount;
-import com.ironhack.iron_bank_project.accounts.model.StudentCheckingAccount;
+import com.ironhack.iron_bank_project.accounts.model.SavingAccount;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
-import com.ironhack.iron_bank_project.exception.AccountCanNotBeCreated;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.users.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,20 +21,29 @@ public class AccountService {
 
     private final AccountValidateService accountValidateService;
 
-    //desde aqui llamamos al accountValidate
-
-    public Account createAccount(CheckingAccountCreateRequest request){
-        if(accountValidateService.isCreationRequestValid(request)){
-          /*  if(accountValidateService.isStudentAccount()){
-                Account account = StudentCheckingAccount.studentAccountFromDTO(request);
-                return accountRepository.save(account);
-            }
-            Account account = CheckingAccount.checkingAccountFromDto();
-            return accountRepository.save(account);*/
-            //comprobar la edad del usuario y mandar a crearse el account pertinente
-        }else{
-            throw new AccountCanNotBeCreated();
+    public ResponseEntity<?> createCheckingAccount(CheckingAccountCreateRequest request) {
+        var user1 = accountValidateService.isUserValid(request.getIdPrimaryOwner());
+        User user2 = null;
+        if (request.getSecondaryOwnerId() != null){
+            user2 = accountValidateService.isUserValid(request.getSecondaryOwnerId());
         }
+        CheckingAccount account = CheckingAccount.checkingAccountFromDTO(request, user1, user2);
+        account = accountRepository.save(account);
+        return ResponseEntity.ok(AccountCreationResponse.fromAccount(account).toString());
+    }
+
+    public ResponseEntity<?> createSavingAccount(SavingAccountCreateRequest request) {
+        var user1 = accountValidateService.isUserValid(request.getPrimaryOwnerId());
+        User user2 = null;
+        if (request.getSecondaryOwnerId() != null){
+            user2 = accountValidateService.isUserValid(request.getSecondaryOwnerId());
+        }
+        SavingAccount account = SavingAccount.savingAccountFromDTO(request);
+
+        return null;
+    }
+
+    public ResponseEntity<?> createCreditCard(RegisterAdminRequest request) {
         return null;
     }
 

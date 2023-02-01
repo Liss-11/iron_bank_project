@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.users.model;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterAdminRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterAdminRequest;
 import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import jakarta.persistence.Entity;

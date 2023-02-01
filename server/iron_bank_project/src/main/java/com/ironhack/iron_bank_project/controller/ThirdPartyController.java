@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
 import com.ironhack.iron_bank_project.users.service.ThirdPartyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

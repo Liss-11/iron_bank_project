@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.dtos.dtoAuthentication.request;
+package com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request;
 
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import jakarta.validation.constraints.NotBlank;

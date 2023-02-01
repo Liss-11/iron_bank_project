@@ -1,7 +1,7 @@
 package com.ironhack.iron_bank_project.users.service;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.respons.RegisterThirdPartyResponse;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterThirdPartyRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.respons.RegisterThirdPartyResponse;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;

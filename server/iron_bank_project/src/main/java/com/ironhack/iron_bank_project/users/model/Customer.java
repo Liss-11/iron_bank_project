@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.users.model;
 
-import com.ironhack.iron_bank_project.dtos.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.utils.Address;
@@ -11,8 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Year;
 
 @Entity
 public class Customer extends User {

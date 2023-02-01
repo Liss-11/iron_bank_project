@@ -12,8 +12,11 @@ import java.math.BigDecimal;
 @Entity
 public class StudentCheckingAccount extends Account {
 
-    public StudentCheckingAccount(BigDecimal balance, AccountType accountType, AccountStatus status, User primaryOwner, User secondaryOwner) {
-        super(balance, accountType, status, primaryOwner, secondaryOwner);
+    private String secretKey;
+
+    public StudentCheckingAccount(BigDecimal balance, User primaryOwner, User secondaryOwner, String secretKey) {
+        super(balance, AccountType.STUDENT, AccountStatus.ACTIVE, primaryOwner, secondaryOwner);
+        this.secretKey = secretKey;
     }
 
     public StudentCheckingAccount() {
