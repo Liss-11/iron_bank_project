@@ -1,14 +1,12 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.CheckingAccountCreateRequest;
+import com.ironhack.iron_bank_project.accounts.dto.request.CreateCheckingAccountRequest;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
 import jakarta.persistence.Entity;
 import jdk.jfr.Timestamp;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -36,7 +34,7 @@ public class CheckingAccount extends Account implements FeesInterface {
     }
 
     public static CheckingAccount checkingAccountFromDTO (
-            CheckingAccountCreateRequest request, User owner, User secondaryOwner){
+            CreateCheckingAccountRequest request, User owner, User secondaryOwner){
         CheckingAccount account = new CheckingAccount();
         if(request.getInitialAmount().compareTo(account.getMinimumBalance()) < 0 ){
             throw new IllegalArgumentException("The initial amount must be greater than the MinimumBalance: 250€");

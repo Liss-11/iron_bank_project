@@ -4,10 +4,9 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Data
-public class CheckingAccountCreateRequest {
+public class CreateCheckingAccountRequest {
 
     @Positive
     @Digits(integer = 20, fraction = 2)
@@ -15,7 +14,7 @@ public class CheckingAccountCreateRequest {
     private BigDecimal initialAmount;
 
     @NotBlank(message = "Primary Owner_ID must not be blank")
-    private String idPrimaryOwner;
+    private String PrimaryOwnerId;
 
     private String secondaryOwnerId;
 

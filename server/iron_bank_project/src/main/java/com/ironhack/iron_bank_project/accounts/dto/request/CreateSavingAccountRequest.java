@@ -6,11 +6,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class SavingAccountCreateRequest {
+public class CreateSavingAccountRequest {
 
     @Positive
     @Digits(integer = 20, fraction = 2)
-    @NotBlank(message = "Balance must not be blank")
+    @NotNull(message = "Balance must not be null")
     private BigDecimal initialAmount;
 
     @NotBlank(message = "Primary_Owner_ID must not be blank")
@@ -18,8 +18,8 @@ public class SavingAccountCreateRequest {
 
     private String secondaryOwnerId;
 
-    @DecimalMax(value = "0.05", message = "Interest must be between 0.0025% and 0.05%")
-    @DecimalMin(value = "0.0025", message = "Interest must be between 0.0025% and 0.05%")
+    @DecimalMax(value = "0.5", message = "Interest must be between 0.0025% and 0.5%")
+    @DecimalMin(value = "0.0025", message = "Interest must be between 0.0025% and 0.5%")
     @Digits(integer = 0, fraction = 4)
     private BigDecimal interestRate;
 

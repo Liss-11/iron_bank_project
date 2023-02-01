@@ -81,8 +81,8 @@ public class UserService {
             }catch(Exception e){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status value not valid.");
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The employeeId doesn't exist.");
+            return ResponseEntity.ok("Status is updated!");
         }
-        return ResponseEntity.ok("Status is updated!");
+        return ResponseEntity.badRequest().body("The userId doesn't exist.");
     }
 }

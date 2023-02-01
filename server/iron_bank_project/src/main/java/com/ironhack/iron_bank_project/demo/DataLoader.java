@@ -70,11 +70,15 @@ public class DataLoader {
         var account2 = new StudentCheckingAccount(BigDecimal.valueOf(200.0), user1, user2, "Anaconda123");
         accountRepository.save(account2);
 
-        var account3 = new SavingAccount(BigDecimal.valueOf(2100.0), user1, user2, "Anaconda123",
+      /*  var account3 = new SavingAccount(BigDecimal.valueOf(120.0), user1, user2, "Anaconda123",
                 BigDecimal.valueOf(120.0), BigDecimal.valueOf(0.0025));
+        accountRepository.save(account3);*/
+
+        var account3 = new SavingAccount(BigDecimal.valueOf(101.0), user1, user2, "Anaconda123",
+                BigDecimal.valueOf(100.0), BigDecimal.valueOf(0.0025));
         accountRepository.save(account3);
 
-        var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.12));
+        var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.1));
         accountRepository.save(account4);
     }
 

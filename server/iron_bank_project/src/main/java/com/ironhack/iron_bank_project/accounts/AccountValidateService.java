@@ -1,14 +1,10 @@
 package com.ironhack.iron_bank_project.accounts;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.CheckingAccountCreateRequest;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
