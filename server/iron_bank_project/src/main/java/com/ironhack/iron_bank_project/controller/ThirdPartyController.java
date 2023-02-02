@@ -16,6 +16,9 @@ public class ThirdPartyController {
 
     private final ThirdPartyService thirdPartyService;
 
+    //TODO PUT
+    //TODO GET
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> registerThirdParty(@Valid @RequestBody RegisterThirdPartyRequest request){

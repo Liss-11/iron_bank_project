@@ -13,6 +13,7 @@ import com.ironhack.iron_bank_project.users.model.ThirdParty;
 import com.ironhack.iron_bank_project.users.repository.ThirdPartyRepository;
 import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import com.ironhack.iron_bank_project.utils.Address;
+import com.ironhack.iron_bank_project.utils.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +49,7 @@ public class DataLoader {
 
         var address1 = new Address("Peralada", "Figueres", "17600", "Spain");
         var user1 = new Customer("antonio", "antonio@delcastillo.com", passwordEncoder.encode("Antonio123"),
-                LocalDate.parse("1992-04-11"), address1, UserStatus.ACTIVE);
+                LocalDate.parse("2003-04-11"), address1, UserStatus.ACTIVE);
         userRepository.save(user1);
 
         var address2 = new Address("Casstellets", "Basrcelona", "66786", "Spain");
@@ -64,21 +65,35 @@ public class DataLoader {
 
         //ACCOUNTS
 
-        var account1 = new CheckingAccount(BigDecimal.valueOf(200.0), user1, user2, "Anaconda123");
+        var account1 = new CheckingAccount(BigDecimal.valueOf(260.0), user1, user2, "Anaconda123");
         accountRepository.save(account1);
+        account1.setBalance(new Money(BigDecimal.valueOf(100.0)));
+        accountRepository.save(account1);
+        account1.setBalance(new Money(BigDecimal.valueOf(40.0)));
+        accountRepository.save(account1);
+        account1.setBalance(new Money(BigDecimal.valueOf(260.0)));
+        accountRepository.save(account1);
+        account1.setBalance(new Money(BigDecimal.valueOf(80.0)));
+        accountRepository.save(account1);
+
+
 
         var account2 = new StudentCheckingAccount(BigDecimal.valueOf(200.0), user1, user2, "Anaconda123");
         accountRepository.save(account2);
 
-      /*  var account3 = new SavingAccount(BigDecimal.valueOf(120.0), user1, user2, "Anaconda123",
-                BigDecimal.valueOf(120.0), BigDecimal.valueOf(0.0025));
-        accountRepository.save(account3);*/
-
         var account3 = new SavingAccount(BigDecimal.valueOf(101.0), user1, user2, "Anaconda123",
                 BigDecimal.valueOf(100.0), BigDecimal.valueOf(0.0025));
         accountRepository.save(account3);
+        account3.setBalance(new Money(BigDecimal.valueOf(80)));
+        accountRepository.save(account3);
+        account3.setBalance(new Money(BigDecimal.valueOf(102)));
+        accountRepository.save(account3);
+        account3.setBalance(new Money(BigDecimal.valueOf(60)));
+        accountRepository.save(account3);
 
-        var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.1));
+
+
+        var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.1), account2);
         accountRepository.save(account4);
     }
 

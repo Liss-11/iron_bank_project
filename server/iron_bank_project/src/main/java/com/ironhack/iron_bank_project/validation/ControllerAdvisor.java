@@ -14,6 +14,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -76,9 +77,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> NoSuchElementException
+            (
+                    NoSuchElementException ex, WebRequest request) {
 
-
-
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now().toString());
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 
 }
 

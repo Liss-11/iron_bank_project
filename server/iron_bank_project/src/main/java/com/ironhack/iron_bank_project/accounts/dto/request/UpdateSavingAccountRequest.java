@@ -8,9 +8,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+//TODO -> copied params, you must adapt them to the class
 @Data
-public class UpdateCheckingAccountRequest {
-
+public class UpdateSavingAccountRequest {
     @Positive
     @Digits(integer = 20, fraction = 2)
     private BigDecimal balance;

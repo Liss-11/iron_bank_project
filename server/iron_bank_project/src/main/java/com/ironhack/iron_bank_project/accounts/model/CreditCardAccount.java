@@ -4,6 +4,7 @@ import com.ironhack.iron_bank_project.accounts.dto.request.CreateCreditCardAccou
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
+import com.ironhack.iron_bank_project.utils.Money;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import lombok.Data;
@@ -23,22 +24,36 @@ public class CreditCardAccount extends Account implements FeesInterface {
    @Column(precision = 10, scale = 4)
     private BigDecimal interestRate;
 
+   @OneToOne()
+   private Account associtedToAccount;
 
-    public CreditCardAccount(BigDecimal balance, User primaryOwner, User secondaryOwner, BigDecimal creditLimit, BigDecimal interestRate) {
+    @Override
+    public void setBalance(Money balance){
+        if(balance.getAmount().compareTo(creditLimit) > 0){
+            balance = new Money(balance.increaseAmount(penalityFee));
+            super.setStatus(AccountStatus.FROZEN);
+        }
+        super.setBalance(balance);
+    }
+
+
+    public CreditCardAccount(BigDecimal balance, User primaryOwner, User secondaryOwner, BigDecimal creditLimit, BigDecimal interestRate, Account associteToAccount) {
         super(balance, AccountType.CREDIT, AccountStatus.ACTIVE, primaryOwner, secondaryOwner);
         setCreditLimit(creditLimit);
         setInterestRate(interestRate);
+        setAssocitedToAccount(associteToAccount);
     }
 
     public CreditCardAccount() {}
 
-    public static CreditCardAccount fromDto(CreateCreditCardAccountRequest dto, User owner, User secondaryOwner){
+    public static CreditCardAccount fromDto(CreateCreditCardAccountRequest dto, User owner, User secondaryOwner, Account associteToAccount){
         return new CreditCardAccount(
-                dto.getInitialAmount(),
+                BigDecimal.valueOf(0.0),
                 owner,
                 secondaryOwner,
                 dto.getCreditLimit(),
-                dto.getInterestRate()
+                dto.getInterestRate(),
+                associteToAccount
         );
     }
 

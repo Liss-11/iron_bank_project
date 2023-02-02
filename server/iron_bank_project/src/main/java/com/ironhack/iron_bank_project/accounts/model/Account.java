@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
+import com.ironhack.iron_bank_project.utils.Money;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,7 +28,10 @@ public abstract class Account {
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
-    private BigDecimal balance;
+    @Embedded
+    private Money balance;
+
+   // private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
@@ -45,8 +49,11 @@ public abstract class Account {
     @JoinTable(name = "secundary_owner_id")
     private User secondaryOwner;
 
+    @OneToOne(mappedBy = "associtedToAccount")
+    private CreditCardAccount creditCard;
+
     public Account(BigDecimal balance, AccountType accountType, AccountStatus status, User primaryOwner, User secondaryOwner) {
-        this.balance = balance;
+        this.balance = new Money(balance);
         this.accountType = accountType;
         this.status = status;
         this.primaryOwner = primaryOwner;
@@ -56,4 +63,9 @@ public abstract class Account {
     public Account() {
 
     }
+
+  /*  private CreditCardAccount getCreditCard(){
+        return creditCard;
+    }*/
+
 }

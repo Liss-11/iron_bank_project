@@ -1,9 +1,12 @@
 package com.ironhack.iron_bank_project.utils;
 
+import jakarta.persistence.Embeddable;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+@Embeddable
 public class Money {
 
     private static final Currency EUR = Currency.getInstance("EUR");
@@ -11,6 +14,10 @@ public class Money {
 
     private final Currency currency;
     private BigDecimal amount;
+
+    public Money(){
+        this.currency = Currency.getInstance("EUR");
+    }
 
     /**
      * Class constructor specifying amount, currency, and rounding
@@ -54,6 +61,8 @@ public class Money {
         setAmount(this.amount.subtract(addAmount));
         return this.amount;
     }
+
+    public void setCurrency(Currency currency){}
 
     public Currency getCurrency() {
         return this.currency;

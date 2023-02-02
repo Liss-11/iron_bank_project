@@ -4,6 +4,7 @@ import com.ironhack.iron_bank_project.accounts.dto.request.CreateSavingAccountRe
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
+import com.ironhack.iron_bank_project.utils.Money;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jdk.jfr.Timestamp;
@@ -21,6 +22,24 @@ public class SavingAccount extends Account implements FeesInterface {
     private LocalDateTime interestPaymentDate = LocalDateTime.now().plusYears(1L);
     @Column(precision = 10, scale = 4)
     private BigDecimal interestRate = BigDecimal.valueOf(0.0025);
+
+    private boolean penalized = false;
+
+    @Override
+    public void setBalance(Money balance){
+        if(balance.getAmount().compareTo(BigDecimal.valueOf(0.0)) <= 0){
+            super.setStatus(AccountStatus.EMPTY);
+        }
+        else if(balance.getAmount().compareTo(getMinimumBalance()) < 0){
+            if(!penalized){
+                balance = new Money(balance.decreaseAmount(penalityFee));
+                penalized = true;
+            }
+        }else{
+            if(penalized){penalized = false;}
+        }
+        super.setBalance(balance);
+    }
 
     public SavingAccount() {}
 
@@ -50,7 +69,7 @@ public class SavingAccount extends Account implements FeesInterface {
         else if(minimumBalance.compareTo(BigDecimal.valueOf(100)) < 0 || minimumBalance.compareTo(BigDecimal.valueOf(1000)) > 0){
             throw new IllegalArgumentException("MinimumBalance must be between 100€ and 1000€");
         }
-        else if (minimumBalance.compareTo(getBalance()) > 0){
+        else if (minimumBalance.compareTo(getBalance().getAmount()) > 0){
             throw new IllegalArgumentException("Balance must be greater than the minimumBalance, put more money in the Account");
         }
         else{this.minimumBalance = minimumBalance;}

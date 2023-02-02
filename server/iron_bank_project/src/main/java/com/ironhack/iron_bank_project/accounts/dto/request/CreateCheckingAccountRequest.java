@@ -19,6 +19,7 @@ public class CreateCheckingAccountRequest {
     private String secondaryOwnerId;
 
     @NotBlank(message = "SecretKey must not be blank")
+    @Size(min = 10, max = 10, message = "The secret key must contain 10 characters")
     private String secretKey;
 
 }

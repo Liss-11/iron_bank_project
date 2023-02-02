@@ -119,6 +119,10 @@ public abstract class User {
         this.createdAt = Instant.now();
     }
 
+    public List<Account> getMyAccounts(){
+        return myAccounts;
+    }
+
     @Override
     public String toString() {
         return "User{" +

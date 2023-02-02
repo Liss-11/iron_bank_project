@@ -1,22 +1,47 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.ChangeAccountStatusRequest;
-import com.ironhack.iron_bank_project.accounts.dto.request.CreateCheckingAccountRequest;
-import com.ironhack.iron_bank_project.accounts.dto.request.CreateCreditCardAccountRequest;
-import com.ironhack.iron_bank_project.accounts.dto.request.CreateSavingAccountRequest;
+import com.ironhack.iron_bank_project.accounts.dto.request.*;
+import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
+import com.ironhack.iron_bank_project.enums.AccountStatus;
+import com.ironhack.iron_bank_project.enums.AccountType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
+
+    private final AccountRepository accountRepository;
+
+    @GetMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAccounts(
+            @RequestParam Optional <AccountStatus> status,
+            @RequestParam Optional <AccountType> type
+    ){
+        if(status.isPresent()){return ResponseEntity.ok(accountRepository.findByStatus(status));}
+        return null;
+    }
+
+    /* public List<Employee> filterDoctors(@RequestParam Optional<Status> status, @RequestParam Optional<String> department) {
+        if (status.isPresent()) {
+            return employeeRepository.findByStatus(status.get());
+        } else if (department.isPresent()) {
+            return employeeRepository.findByDepartment(department.get());
+        } else {
+            return employeeRepository.findAll();
+        }
+    }
+*/
 
     //getAllAccounts
 
@@ -24,7 +49,7 @@ public class AccountController {
 
     //getAccountById
 
-    //deleteAccount
+
 
     @PostMapping(value = "/create/checking_account", consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,13 +75,37 @@ public class AccountController {
         return accountService.createCreditCard(request);
     }
 
+    @PutMapping("/update/checking_account/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateCheckingAccount(@PathVariable (name = "id") Long id,
+                                          @Valid @RequestBody UpdateCheckingAccountRequest request){
+        return accountService.updateCheckingAccount(id, request);
+    }
+
+    //TODO
+    @PutMapping("/update/saving_account/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateSavingAccount(@PathVariable (name = "id") Long id,
+                                                   @Valid @RequestBody UpdateSavingAccountRequest request){
+        return accountService.updateSavingAccount(id, request);
+    }
+
+    //TODO
+    @PutMapping("/update/credit_card/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateCreditCardAccount(@PathVariable (name = "id") Long id,
+                                                   @Valid @RequestBody UpdateCreditCardAccountRequest request){
+        return accountService.updateCreditCardAccount(id, request);
+    }
+
+
+
     @PatchMapping("/change_status/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> changeStatus(@PathVariable (name = "id") Long id,
                                           @Valid @RequestBody ChangeAccountStatusRequest request){
         return accountService.changeStatus(id, request);
     }
-
 
 
     @DeleteMapping("/delete/{id}")
@@ -66,42 +115,5 @@ public class AccountController {
     ){
         return accountService.deleteAccountById(id);
     }
-
-
-
-
-
-
-
-/*
-    @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateUser(@PathVariable(name = "id") String id,
-                                        @Valid @RequestBody UpdateCustomerRequest request){
-        return userService.updateUser(id, request);
-    }
-
-    @PatchMapping("/change_status/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> changeStatus(@PathVariable (name = "id") String id,
-                                          @Valid @RequestBody ChangeStatusRequest request){
-        return userService.changeStatus(id, request);
-    }
-
-
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteUserById(
-            @PathVariable (name = "id") String id
-    ){
-        return userService.deleteUserById(id);
-    }
-
-    @DeleteMapping("/delete/current_customer")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteActualCustomer(){
-        return userService.deleteActualUser();
-    }
-*/
 
 }
