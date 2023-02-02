@@ -1,6 +1,7 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
 import com.ironhack.iron_bank_project.accounts.dto.request.CreateCreditCardAccountRequest;
+import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
@@ -21,17 +22,35 @@ public class CreditCardAccount extends Account implements FeesInterface {
 
     private BigDecimal creditLimit;
 
+    private boolean penalized = false;
+
    @Column(precision = 10, scale = 4)
     private BigDecimal interestRate;
 
    @OneToOne()
-   private Account associtedToAccount;
+   //@JoinColumn(name = "principal_account")
+   private Account associatedToAccount;
 
     @Override
     public void setBalance(Money balance){
+        if(interestPaymentDate.isBefore(LocalDateTime.now())){
+            long month = 1L;
+            while(interestPaymentDate.isBefore(LocalDateTime.now())){
+                interestPaymentDate = interestPaymentDate.plusMonths(1L);
+                month++;
+            }
+           /* if(month != 1L){
+                interestPaymentDate = interestPaymentDate.plusMonths(month - 1L);
+            }*/
+            AccountService.creditCardInterestsManager(associatedToAccount, interestRate, balance, month);
+        }
         if(balance.getAmount().compareTo(creditLimit) > 0){
-            balance = new Money(balance.increaseAmount(penalityFee));
-            super.setStatus(AccountStatus.FROZEN);
+            if(!penalized) {
+                balance = new Money(balance.increaseAmount(penalityFee));
+                penalized = true;
+            }
+        }else{
+            if(penalized){penalized = false;}
         }
         super.setBalance(balance);
     }
@@ -41,7 +60,7 @@ public class CreditCardAccount extends Account implements FeesInterface {
         super(balance, AccountType.CREDIT, AccountStatus.ACTIVE, primaryOwner, secondaryOwner);
         setCreditLimit(creditLimit);
         setInterestRate(interestRate);
-        setAssocitedToAccount(associteToAccount);
+        setAssociatedToAccount(associteToAccount);
     }
 
     public CreditCardAccount() {}

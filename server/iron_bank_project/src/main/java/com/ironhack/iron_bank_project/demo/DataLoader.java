@@ -92,9 +92,12 @@ public class DataLoader {
         accountRepository.save(account3);
 
 
-
         var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.1), account2);
         accountRepository.save(account4);
+
+        account2.setBalance(new Money(BigDecimal.valueOf(-2)));
+        accountRepository.save(account2);
+
     }
 
 

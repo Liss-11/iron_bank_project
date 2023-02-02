@@ -10,6 +10,7 @@ import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import com.ironhack.iron_bank_project.security.UserDetailsImpl;
 import com.ironhack.iron_bank_project.security.jwt.JwtService;
+import com.ironhack.iron_bank_project.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private final UserDetailsService userDetailsService;
+
+    private final Validator validator;
 
 
 
@@ -66,7 +69,7 @@ public class AuthenticationService {
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Admin registered successfully!");
     }
 
-
+//TODO: when LogIn -> checkAllAccounts for fees and interests
 
     public ResponseEntity<?> authenticate(AuthenticationRequest request) {
         Authentication authentication =  authenticationManager.authenticate(
@@ -79,6 +82,8 @@ public class AuthenticationService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(userDetails);
+
+        //TODO    ->   validator.updateAccountsInfo; (put it also in a Controller)
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(userDetails.getUsername());

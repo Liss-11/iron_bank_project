@@ -7,6 +7,7 @@ import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.utils.Money;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jdk.jfr.Timestamp;
@@ -37,31 +38,38 @@ public class CheckingAccount extends Account implements FeesInterface {
     }
 
 
-    //TODO -> Bloquear las CreditCard, si tiene alguna asociada
+    //TODO -> Bloquear las CreditCard, si tiene alguna asociada!! (desde una máscara)
 
 
     @Override
-    public void setBalance(Money balance){
-        if(balance.getAmount().compareTo(BigDecimal.valueOf(0.0)) <= 0){
+    public void setBalance(Money balance) {
+        if (balance.getAmount().compareTo(BigDecimal.valueOf(0.0)) <= 0) {
             super.setStatus(AccountStatus.EMPTY);
             if(super.getCreditCard() != null){
                 super.getCreditCard().setStatus(AccountStatus.FROZEN);
             }
-        }
-        else if(balance.getAmount().compareTo(getMinimumBalance()) < 0){
-            if(!penalized){
+        } else if (balance.getAmount().compareTo(getMinimumBalance()) < 0) {
+            if (!penalized) {
                 balance = new Money(balance.decreaseAmount(penalityFee));
                 penalized = true;
             }
-        }else{
-            if(penalized){penalized = false;}
-            if(super.getCreditCard() != null){
-                if(super.getCreditCard().getStatus() == AccountStatus.FROZEN){
+            if (super.getStatus() == AccountStatus.EMPTY) {
+                super.setStatus(AccountStatus.ACTIVE);
+            }
+        } else {
+            if (penalized) {
+                penalized = false;
+            }
+            if (super.getStatus() == AccountStatus.EMPTY) {
+                super.setStatus(AccountStatus.ACTIVE);
+            }
+            if(super.getCreditCard() != null) {
+                if (super.getCreditCard().getStatus() == AccountStatus.FROZEN) {
                     super.getCreditCard().setStatus(AccountStatus.ACTIVE);
                 }
             }
+            super.setBalance(balance);
         }
-        super.setBalance(balance);
     }
 
     public CheckingAccount(BigDecimal balance, Customer primaryOwner, Customer secondaryOwner, String secretKey) {

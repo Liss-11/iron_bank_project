@@ -11,11 +11,14 @@ import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.Chang
 import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.utils.Address;
+import com.ironhack.iron_bank_project.utils.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,15 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     private final AccountValidateService accountValidateService;
+
+    public static void creditCardInterestsManager(Account associtedToAccount, BigDecimal interestRate, Money balance, Long month) {
+        BigDecimal amountToExtract = balance.getAmount().multiply(interestRate.multiply(BigDecimal.valueOf(month)));
+        associtedToAccount.setBalance(new Money(associtedToAccount.getBalance().decreaseAmount(amountToExtract)));
+    }
+
+  /*  public static CreditCardAccount getCreditCardAccount(Long id) {
+        account = accountRepository.findByPrincipalAccount(id);
+    }*/
 
     public ResponseEntity<?> createCheckingAccount(CreateCheckingAccountRequest request) {
         Customer user1 = accountValidateService.isUserValid(request.getPrimaryOwnerId());
@@ -110,7 +122,7 @@ public class AccountService {
     public ResponseEntity<?> deleteAccountById(Long id) {
         accountRepository.findById(id).orElseThrow(UserNotFoundException::new);
         accountRepository.deleteById(id);
-        return ResponseEntity.ok("Account deleted Successfully!");
+        return ResponseEntity.ok("Account, and (if exists) associated CreditCard, were deleted Successfully!");
     }
 
 
