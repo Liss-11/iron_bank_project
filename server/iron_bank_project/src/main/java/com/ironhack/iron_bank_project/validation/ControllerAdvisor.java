@@ -1,5 +1,6 @@
 package com.ironhack.iron_bank_project.validation;
 
+import com.ironhack.iron_bank_project.exception.NotEnoughMoneyInAccountException;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -87,6 +88,19 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotEnoughMoneyInAccountException.class)
+    public ResponseEntity<Object> NotEnoughtMoneyInAccountException
+            (
+                    NotEnoughMoneyInAccountException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now().toString());
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }
 

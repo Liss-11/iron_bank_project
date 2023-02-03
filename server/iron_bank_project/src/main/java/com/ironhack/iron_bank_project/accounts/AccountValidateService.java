@@ -5,11 +5,9 @@ import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.Customer;
-import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,7 +24,7 @@ public class AccountValidateService {
 
 
     public Customer isUserValid(String userId){
-        return validator.isUserValid(userId);
+        return validator.isUserCustomer(userId);
     }
 
     public boolean isUserStudent(Customer customer){return validator.isUserStudent(customer);};
