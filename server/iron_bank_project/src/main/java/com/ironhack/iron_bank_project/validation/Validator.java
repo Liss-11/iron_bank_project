@@ -56,7 +56,7 @@ public class Validator {
 
 
     //ACCOUNT noT freeze, user not pendent, or
-    public Account isAccountValidForTransfers(Long accountId) {
+    public Account isAccountValid(Long accountId) {
         var account = accountRepository.findById(accountId);
         if (account.isPresent()){
             if(!isUserActive(account.get().getPrimaryOwner().getId())){
@@ -65,11 +65,7 @@ public class Validator {
             if(account.get().getStatus() != AccountStatus.ACTIVE && account.get().getStatus() != AccountStatus.EMPTY){
                 throw new IllegalArgumentException("Account with id: " + accountId + " has Status: " + account.get().getStatus() + ". ONLY accounts with status ACTIVE can make transfers");
             }
-            if(account.get().getAccountType() == AccountType.CHECKING || account.get().getAccountType() == AccountType.STUDENT){
-                return account.get();
-            }else{
-                throw new IllegalArgumentException("Account with id: " + accountId + " has Type: " + account.get().getAccountType() + ". ONLY Checking or a Student accounts can MAKE or RECEIVE transfers");
-            }
+            return account.get();
         }
         throw new NoSuchElementException("Account with id: " + accountId + " doesn't exist!");
     }
@@ -158,5 +154,9 @@ public class Validator {
         if(formId.equals(toId)){
             throw new IllegalArgumentException("For transfer you have to introduce two DIFFERENT accounts");
         }
+    }
+
+    public boolean isCheckingAccount(Account account) {
+        return account.getAccountType() == AccountType.CHECKING || account.getAccountType() == AccountType.STUDENT;
     }
 }

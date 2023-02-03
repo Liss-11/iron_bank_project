@@ -66,16 +66,6 @@ public class DataLoader {
 
         var account1 = new CheckingAccount(BigDecimal.valueOf(260.0), user1, user2, "Anaconda123");
         accountRepository.save(account1);
-        account1.setBalance(new Money(BigDecimal.valueOf(100.0)));
-        accountRepository.save(account1);
-        account1.setBalance(new Money(BigDecimal.valueOf(40.0)));
-        accountRepository.save(account1);
-        account1.setBalance(new Money(BigDecimal.valueOf(260.0)));
-        accountRepository.save(account1);
-        account1.setBalance(new Money(BigDecimal.valueOf(80.0)));
-        accountRepository.save(account1);
-
-
 
         var account2 = new StudentCheckingAccount(BigDecimal.valueOf(200.0), user1, user2, "Anaconda123");
         accountRepository.save(account2);

@@ -3,6 +3,7 @@ package com.ironhack.iron_bank_project.controller;
 import com.ironhack.iron_bank_project.transactions.Transaction;
 import com.ironhack.iron_bank_project.transactions.TransactionService;
 import com.ironhack.iron_bank_project.transactions.dtos.request.TransferRequest;
+import com.ironhack.iron_bank_project.transactions.dtos.request.WithdrawDepositRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,13 @@ public class TransactionsController {
 
     @PostMapping("/withdraw")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> makeWithdraw(@Valid @RequestBody TransferRequest transfer){
-        return transactionService.makeTransfer(transfer);
+    public ResponseEntity<?> makeWithdraw(@Valid @RequestBody WithdrawDepositRequest withdraw){
+        return transactionService.makeWithdraw(withdraw);
     }
 
     @PostMapping("/deposit")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> makeDeposit(@Valid @RequestBody TransferRequest transfer){
-        return transactionService.makeTransfer(transfer);
+    public ResponseEntity<?> makeDeposit(@Valid @RequestBody WithdrawDepositRequest deposit){
+        return transactionService.makeDeposit(deposit);
     }
 
 

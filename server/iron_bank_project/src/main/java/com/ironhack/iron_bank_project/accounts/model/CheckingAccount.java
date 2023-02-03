@@ -52,7 +52,7 @@ public class CheckingAccount extends Account implements FeesInterface {
             if (super.getStatus() == AccountStatus.EMPTY) {
                 super.setStatus(AccountStatus.ACTIVE);
             }
-        } else {
+        } else if (balance.getAmount().compareTo(getMinimumBalance()) > 0){
             if (penalized) {
                 penalized = false;
             }
@@ -64,8 +64,8 @@ public class CheckingAccount extends Account implements FeesInterface {
                     super.getCreditCard().setStatus(AccountStatus.ACTIVE);
                 }
             }
-            super.setBalance(balance);
         }
+        super.setBalance(balance);
     }
 
     public CheckingAccount(BigDecimal balance, Customer primaryOwner, Customer secondaryOwner, String secretKey) {

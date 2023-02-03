@@ -12,21 +12,23 @@ import java.time.LocalDateTime;
 public class TransactionResponse {
 
     private LocalDateTime date;
-    private Long accountToId;
-    private TransactionType transactionType;
-    private BigDecimal sentAmount;
     private Long accountFromId;
+    private BigDecimal initialAmount;
+    private TransactionType transactionType;
+    private Long accountToId;
+    private BigDecimal sentAmount;
     private BigDecimal actualAmount;
 
     public TransactionResponse() {
     }
 
-    public TransactionResponse(LocalDateTime date, Long accountToId, TransactionType transactionType, BigDecimal sentAmount, Long accountFromId, BigDecimal actualAmount) {
+    public TransactionResponse(LocalDateTime date, Long accountFromId, BigDecimal initialAmount, TransactionType transactionType, Long accountToId, BigDecimal sentAmount, BigDecimal actualAmount) {
         this.date = date;
-        this.accountToId = accountToId;
-        this.transactionType = transactionType;
-        this.sentAmount = sentAmount;
         this.accountFromId = accountFromId;
+        this.initialAmount = initialAmount;
+        this.transactionType = transactionType;
+        this.accountToId = accountToId;
+        this.sentAmount = sentAmount;
         this.actualAmount = actualAmount;
     }
 }
