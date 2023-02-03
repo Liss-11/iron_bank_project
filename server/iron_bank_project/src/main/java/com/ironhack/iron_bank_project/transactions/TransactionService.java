@@ -32,6 +32,7 @@ public class TransactionService {
         if (user.getRole() == Role.ROLE_USER) {
             validator.isUserOwnerOfAccount(user, accountFrom);
         }
+        validator.isTransferToItself(transfer.getFromAccountId(), transfer.getToAccountId());
         validator.accountHasEnoughMoney(accountFrom, transfer.getAmount());
         accountFrom.setBalance(new Money(accountFrom.getBalance().decreaseAmount(transfer.getAmount())));
         accountTo.setBalance(new Money(accountTo.getBalance().increaseAmount(transfer.getAmount())));
@@ -46,5 +47,4 @@ public class TransactionService {
                 accountFrom.getBalance().getAmount());
         return ResponseEntity.ok(response);
     }
-
 }

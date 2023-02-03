@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -69,8 +70,6 @@ public class AuthenticationService {
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Admin registered successfully!");
     }
 
-//TODO: when LogIn -> checkAllAccounts for fees and interests
-
     public ResponseEntity<?> authenticate(AuthenticationRequest request) {
         Authentication authentication =  authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -79,14 +78,19 @@ public class AuthenticationService {
         if(user == null){
             throw new UsernameNotFoundException("This User doesn't exist");
         }
+        var userIsActive = userRepository.findByEmail(request.getEmail());
+        if(userIsActive.isPresent()){
+            if(userIsActive.get().getStatus() != UserStatus.ACTIVE){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "This user actually is not ACTIVE");
+            }
+        }
+        validator.updateAccountsInfo();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(userDetails);
 
-        //TODO    ->   validator.updateAccountsInfo; (put it also in a Controller)
-
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(userDetails.getUsername());
+                .body("Welcome to your Account: [" + userDetails.getUsername() + "]");
 
     }
 

@@ -56,8 +56,6 @@ public abstract class User {
     @JsonIgnore
     private List<Account> myAccountsAsSeconday;
 
-    /*@OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Student> students;*/
 
 
 

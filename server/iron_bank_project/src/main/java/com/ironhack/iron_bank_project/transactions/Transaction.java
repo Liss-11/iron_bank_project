@@ -49,8 +49,7 @@ public class Transaction {
         setDescription(description);
     }
 
-    public Transaction(LocalDateTime creationInstant, String fromThirdParty, Account to, Money amount, TransactionType type, String description) {
-        this.creationInstant = creationInstant;
+    public Transaction(String fromThirdParty, Account to, Money amount, TransactionType type, String description) {
         this.fromThirdParty = fromThirdParty;
         this.to = to;
         this.amount = amount;

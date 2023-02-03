@@ -25,6 +25,18 @@ public class TransactionsController {
         return transactionService.makeTransfer(transfer);
     }
 
+    @PostMapping("/withdraw")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> makeWithdraw(@Valid @RequestBody TransferRequest transfer){
+        return transactionService.makeTransfer(transfer);
+    }
+
+    @PostMapping("/deposit")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> makeDeposit(@Valid @RequestBody TransferRequest transfer){
+        return transactionService.makeTransfer(transfer);
+    }
+
 
 
 }

@@ -90,7 +90,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NotEnoughMoneyInAccountException.class)
-    public ResponseEntity<Object> NotEnoughtMoneyInAccountException
+    public ResponseEntity<Object> NotEnoughMoneyInAccountException
             (
                     NotEnoughMoneyInAccountException ex, WebRequest request) {
 

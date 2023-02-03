@@ -60,22 +60,19 @@ public class Validator {
         var account = accountRepository.findById(accountId);
         if (account.isPresent()){
             if(!isUserActive(account.get().getPrimaryOwner().getId())){
-                throw new IllegalArgumentException ("User of account with id: " + accountId + " is not an ACTIVE user\nHis accounts are BLOCKED");
+                throw new IllegalArgumentException ("User of account with id: " + accountId + " is not an ACTIVE user. His accounts are BLOCKED");
             }
             if(account.get().getStatus() != AccountStatus.ACTIVE && account.get().getStatus() != AccountStatus.EMPTY){
-                throw new IllegalArgumentException("Account with id: " + accountId + " has Status: " + account.get().getStatus() + "\n" + "ONLY accounts with status ACTIVE can make transfers");
+                throw new IllegalArgumentException("Account with id: " + accountId + " has Status: " + account.get().getStatus() + ". ONLY accounts with status ACTIVE can make transfers");
             }
             if(account.get().getAccountType() == AccountType.CHECKING || account.get().getAccountType() == AccountType.STUDENT){
                 return account.get();
             }else{
-                throw new IllegalArgumentException("Account with id: " + accountId + " has Type: " + account.get().getAccountType() + "\n" + "ONLY Checking or a Student accounts can MAKE or RECEIVE transfers");
+                throw new IllegalArgumentException("Account with id: " + accountId + " has Type: " + account.get().getAccountType() + ". ONLY Checking or a Student accounts can MAKE or RECEIVE transfers");
             }
         }
         throw new NoSuchElementException("Account with id: " + accountId + " doesn't exist!");
     }
-
-
-
 
 
     public boolean isUserStudent(Customer customer) {
@@ -153,7 +150,13 @@ public class Validator {
 
     public void accountHasEnoughMoney(Account accountFrom, BigDecimal amount) {
         if (accountFrom.getBalance().getAmount().compareTo(amount) < 0){
-            throw new NotEnoughMoneyInAccountException("The account with id: " + accountFrom.getId() + " has not enough money");
+            throw new NotEnoughMoneyInAccountException("The account with id: " + accountFrom.getId() + " has not enough money. Actual amount: " + accountFrom.getBalance().getAmount());
+        }
+    }
+
+    public void isTransferToItself(Long formId, Long toId) {
+        if(formId.equals(toId)){
+            throw new IllegalArgumentException("For transfer you have to introduce two DIFFERENT accounts");
         }
     }
 }

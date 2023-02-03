@@ -5,7 +5,6 @@ import com.ironhack.iron_bank_project.accounts.model.CreditCardAccount;
 import com.ironhack.iron_bank_project.accounts.model.SavingAccount;
 import com.ironhack.iron_bank_project.accounts.model.StudentCheckingAccount;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
-import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.users.model.Admin;
 import com.ironhack.iron_bank_project.users.model.Customer;

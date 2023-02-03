@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/third-party/**").permitAll()
                 .requestMatchers("/api/automatic_data_manager/**").hasRole("ADMIN")
                 .requestMatchers("/api/transactions/**").permitAll()
+                .requestMatchers("/api/accounts/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

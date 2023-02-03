@@ -1,6 +1,8 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
@@ -53,15 +55,16 @@ public abstract class Account {
     private User secondaryOwner;
 
     @OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
-   // @JsonIgnore
+    @JsonIgnore
     private List<Transaction> fromAccountTransaction;
 
     @OneToMany(mappedBy = "to", cascade = CascadeType.ALL)
-  //  @JsonIgnore
+    @JsonIgnore
     private List<Transaction> toAccountTransaction;
 
     // @JoinColumn(name = "principal_account")
     @OneToOne(mappedBy = "associatedToAccount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private CreditCardAccount creditCard;
 
     public Account(BigDecimal balance, AccountType accountType, AccountStatus status, User primaryOwner, User secondaryOwner) {
@@ -73,6 +76,8 @@ public abstract class Account {
     }
 
     public Account() {}
+
+
 
 
 }

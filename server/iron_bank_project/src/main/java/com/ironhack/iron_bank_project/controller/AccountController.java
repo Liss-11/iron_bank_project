@@ -1,6 +1,8 @@
 package com.ironhack.iron_bank_project.controller;
 
 import com.ironhack.iron_bank_project.accounts.dtos.request.*;
+import com.ironhack.iron_bank_project.accounts.dtos.response.GetAccountResponse;
+import com.ironhack.iron_bank_project.accounts.model.Account;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,14 +25,45 @@ public class AccountController {
 
     private final AccountRepository accountRepository;
 
-    @GetMapping(consumes = "application/json")
+  /*  @GetMapping(consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getAccounts(
-            @RequestParam Optional <AccountStatus> status,
-            @RequestParam Optional <AccountType> type
+    public List<Account> getAccounts(){
+        return accountRepository.findAll();
+    }*/
+
+    @GetMapping("/long_version")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAccountsLongVersion(
+            @RequestParam Optional <String> status,
+            @RequestParam Optional <String> type
     ){
-        if(status.isPresent()){return ResponseEntity.ok(accountRepository.findByStatus(status));}
-        return null;
+        if(status.isPresent()){
+            return ResponseEntity.ok(accountRepository.findByStatus(AccountStatus.valueOf(status.get())));
+        }else if(type.isPresent()){
+            return ResponseEntity.ok(accountRepository.findByAccountType(AccountType.valueOf(type.get())));
+        }
+        return ResponseEntity.ok(accountRepository.findAll());
+    }
+
+    @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAccountsShortVersion(
+            @RequestParam Optional <String> status,
+            @RequestParam Optional <String> type
+    ){
+        return accountService.getAccounts(type, status);
+    }
+
+    @GetMapping("/my_accounts")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getMyAccounts(){
+        return accountService.getMyAccounts();
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> getAccountById(@PathVariable Long id){
+        return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
     /* public List<Employee> filterDoctors(@RequestParam Optional<Status> status, @RequestParam Optional<String> department) {
