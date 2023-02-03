@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.accounts.model.Account;
+import com.ironhack.iron_bank_project.transactions.Transaction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -54,6 +55,9 @@ public abstract class User {
     @OneToMany(mappedBy = "secondaryOwner", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Account> myAccountsAsSeconday;
+
+    /*@OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Student> students;*/
 
 
 

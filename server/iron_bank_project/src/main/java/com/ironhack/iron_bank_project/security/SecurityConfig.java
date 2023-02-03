@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/api/third-party/**").permitAll()
-                .requestMatchers("/api/accounts/**").permitAll()
+                .requestMatchers("/api/automatic_data_manager/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -1,7 +1,6 @@
-package com.ironhack.iron_bank_project.accounts.dto.response;
+package com.ironhack.iron_bank_project.accounts.dtos.response;
 
 import com.ironhack.iron_bank_project.accounts.model.Account;
-import com.ironhack.iron_bank_project.accounts.model.CreditCardAccount;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import lombok.Data;
 

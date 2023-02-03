@@ -1,6 +1,6 @@
 package com.ironhack.iron_bank_project.controller;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.*;
+import com.ironhack.iron_bank_project.accounts.dtos.request.*;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;

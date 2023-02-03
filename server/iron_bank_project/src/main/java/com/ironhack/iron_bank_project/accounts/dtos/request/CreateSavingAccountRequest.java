@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.accounts.dto.request;
+package com.ironhack.iron_bank_project.accounts.dtos.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

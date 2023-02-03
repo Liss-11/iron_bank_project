@@ -1,7 +1,6 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.CreateCreditCardAccountRequest;
-import com.ironhack.iron_bank_project.accounts.service.AccountService;
+import com.ironhack.iron_bank_project.accounts.dtos.request.CreateCreditCardAccountRequest;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.User;
@@ -28,22 +27,11 @@ public class CreditCardAccount extends Account implements FeesInterface {
     private BigDecimal interestRate;
 
    @OneToOne()
-   //@JoinColumn(name = "principal_account")
+   @JoinColumn(name = "principal_account")
    private Account associatedToAccount;
 
     @Override
     public void setBalance(Money balance){
-        if(interestPaymentDate.isBefore(LocalDateTime.now())){
-            long month = 1L;
-            while(interestPaymentDate.isBefore(LocalDateTime.now())){
-                interestPaymentDate = interestPaymentDate.plusMonths(1L);
-                month++;
-            }
-           /* if(month != 1L){
-                interestPaymentDate = interestPaymentDate.plusMonths(month - 1L);
-            }*/
-            AccountService.creditCardInterestsManager(associatedToAccount, interestRate, balance, month);
-        }
         if(balance.getAmount().compareTo(creditLimit) > 0){
             if(!penalized) {
                 balance = new Money(balance.increaseAmount(penalityFee));
@@ -84,8 +72,10 @@ public class CreditCardAccount extends Account implements FeesInterface {
         }
         else if(creditLimit.compareTo(MAX_CREDIT) > 0 || creditLimit.compareTo(MIN_CREDIT) < 0){
             throw new IllegalArgumentException("Credit limit must be between 100 and 1000");
+        }else{
+            this.creditLimit = creditLimit;
         }
-        this.creditLimit = creditLimit;
+
     }
 
     public void setInterestRate(BigDecimal interestRate){

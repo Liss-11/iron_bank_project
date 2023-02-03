@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.accounts.dto.request;
+package com.ironhack.iron_bank_project.accounts.dtos.request;
 
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import jakarta.validation.constraints.Digits;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 //TODO -> copied params, you must adapt them to the class
 @Data
-public class UpdateSavingAccountRequest {
+public class UpdateCreditCardAccountRequest {
     @Positive
     @Digits(integer = 20, fraction = 2)
     private BigDecimal balance;

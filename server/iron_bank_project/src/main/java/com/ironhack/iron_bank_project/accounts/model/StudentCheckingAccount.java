@@ -1,17 +1,13 @@
 package com.ironhack.iron_bank_project.accounts.model;
 
-import com.ironhack.iron_bank_project.accounts.dto.request.CreateCheckingAccountRequest;
-import com.ironhack.iron_bank_project.accounts.dto.request.UpdateCheckingAccountRequest;
+import com.ironhack.iron_bank_project.accounts.dtos.request.CreateCheckingAccountRequest;
+import com.ironhack.iron_bank_project.accounts.dtos.request.UpdateCheckingAccountRequest;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.utils.Money;
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.math.BigDecimal;

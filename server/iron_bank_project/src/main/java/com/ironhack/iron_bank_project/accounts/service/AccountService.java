@@ -1,16 +1,13 @@
 package com.ironhack.iron_bank_project.accounts.service;
 
 import com.ironhack.iron_bank_project.accounts.AccountValidateService;
-import com.ironhack.iron_bank_project.accounts.dto.request.*;
-import com.ironhack.iron_bank_project.accounts.dto.response.AccountCreationResponse;
+import com.ironhack.iron_bank_project.accounts.dtos.request.*;
+import com.ironhack.iron_bank_project.accounts.dtos.response.AccountCreationResponse;
 import com.ironhack.iron_bank_project.accounts.model.*;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
-import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.ChangeStatusRequest;
 import com.ironhack.iron_bank_project.users.model.Customer;
-import com.ironhack.iron_bank_project.users.model.User;
-import com.ironhack.iron_bank_project.utils.Address;
 import com.ironhack.iron_bank_project.utils.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

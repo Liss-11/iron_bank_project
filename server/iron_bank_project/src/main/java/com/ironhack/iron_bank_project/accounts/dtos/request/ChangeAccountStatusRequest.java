@@ -1,4 +1,4 @@
-package com.ironhack.iron_bank_project.accounts.dto.request;
+package com.ironhack.iron_bank_project.accounts.dtos.request;
 
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import jakarta.validation.constraints.NotBlank;

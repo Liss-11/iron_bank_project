@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
 import com.ironhack.iron_bank_project.enums.AccountType;
+import com.ironhack.iron_bank_project.transactions.Transaction;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.utils.Money;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -50,10 +52,16 @@ public abstract class Account {
     @JoinTable(name = "secundary_owner_id")
     private User secondaryOwner;
 
+    @OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
+   // @JsonIgnore
+    private List<Transaction> fromAccountTransaction;
 
-    //@OneToOne(mappedBy = "associatedToAccount")
+    @OneToMany(mappedBy = "to", cascade = CascadeType.ALL)
+  //  @JsonIgnore
+    private List<Transaction> toAccountTransaction;
+
+    // @JoinColumn(name = "principal_account")
     @OneToOne(mappedBy = "associatedToAccount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "principal_account")
     private CreditCardAccount creditCard;
 
     public Account(BigDecimal balance, AccountType accountType, AccountStatus status, User primaryOwner, User secondaryOwner) {
@@ -64,8 +72,7 @@ public abstract class Account {
         this.secondaryOwner = secondaryOwner;
     }
 
-    public Account() {
+    public Account() {}
 
-    }
 
 }
