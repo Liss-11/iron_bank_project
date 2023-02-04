@@ -56,17 +56,23 @@ public abstract class User {
     @JsonIgnore
     private List<Account> myAccountsAsSeconday;
 
+    private String passwordResetQuestion;
+
+    private String passwordResetAnswer;
+
 
 
 
     public User(){}
 
-    public User(String name, String email, String password, Role role, UserStatus status){
+    public User(String name, String email, String password, Role role, UserStatus status, String passwordResetQuestion, String passwordResetAnswer){
         setName(name);
         setEmail(email);
         setPassword(password);
         setRole(role);
         setStatus(status);
+        setPasswordResetQuestion(passwordResetQuestion);
+        setPasswordResetAnswer(passwordResetAnswer);
     }
 
     public String getId() {
@@ -119,6 +125,22 @@ public abstract class User {
 
     public void setCreatedAt() {
         this.createdAt = Instant.now();
+    }
+
+    public String getPasswordResetQuestion() {
+        return passwordResetQuestion;
+    }
+
+    public void setPasswordResetQuestion(String passwordResetQuestion) {
+        this.passwordResetQuestion = passwordResetQuestion;
+    }
+
+    public String getPasswordResetAnswer() {
+        return passwordResetAnswer;
+    }
+
+    public void setPasswordResetAnswer(String passwordResetAnswer) {
+        this.passwordResetAnswer = passwordResetAnswer;
     }
 
     public List<Account> getMyAccounts(){

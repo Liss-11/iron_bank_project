@@ -20,6 +20,13 @@ public class RegisterCustomerRequest {
     @NotBlank(message = "Date of Birth must not be blank")
     @Pattern(regexp = "^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "Date format must be YYYY-MM-DD")
     private String dateOfBirth;
+
+    @NotBlank(message = "Password Reset Question must not be blank")
+    private String passwordResetQuestion;
+
+    @NotBlank(message = "Password Reset Answer must not be blank")
+
+    private String passwordResetAnswer;
     @NotBlank(message = "Street must not be blank")
     private String street;
     @NotBlank(message = "City must not be blank")

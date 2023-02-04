@@ -3,6 +3,7 @@ package com.ironhack.iron_bank_project.controller;
 import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.AuthenticationRequest;
 import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterAdminRequest;
 import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterCustomerRequest;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.ResetPasswordRequest;
 import com.ironhack.iron_bank_project.users.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,16 @@ public class AuthController {
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
         return authenticationService.logout();
+    }
 
+    @PostMapping("/forgot_password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        return authenticationService.forgotPassword(email);
+    }
+
+    @PostMapping("/reset_password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+       return authenticationService.resetPassword(request);
     }
 
 }

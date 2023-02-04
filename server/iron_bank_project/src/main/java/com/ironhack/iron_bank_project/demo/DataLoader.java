@@ -48,12 +48,12 @@ public class DataLoader {
 
         var address1 = new Address("Peralada", "Figueres", "17600", "Spain");
         var user1 = new Customer("antonio", "antonio@delcastillo.com", passwordEncoder.encode("Antonio123"),
-                LocalDate.parse("2003-04-11"), address1, UserStatus.ACTIVE);
+                LocalDate.parse("2003-04-11"), address1, UserStatus.ACTIVE, "Your favorite color", "Red");
         userRepository.save(user1);
 
         var address2 = new Address("Casstellets", "Basrcelona", "66786", "Spain");
         var user2 = new Customer("laura", "laura@castellanos.com", passwordEncoder.encode("Laura123"),
-                LocalDate.parse("2000-06-15"), address2, UserStatus.ACTIVE);
+                LocalDate.parse("2000-06-15"), address2, UserStatus.ACTIVE, "Your dog's name", "Ara");
         userRepository.save(user2);
 
         var user3 = new Admin("alissia", "frolova.alissia@gmail.com", passwordEncoder.encode("Mushu0311"));

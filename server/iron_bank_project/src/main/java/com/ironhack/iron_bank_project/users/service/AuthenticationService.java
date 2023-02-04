@@ -5,6 +5,7 @@ import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.Regis
 import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.RegisterCustomerRequest;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.UserWithEmailAlreadyExistsException;
+import com.ironhack.iron_bank_project.users.dtos.dtoAuthentication.request.ResetPasswordRequest;
 import com.ironhack.iron_bank_project.users.model.Admin;
 import com.ironhack.iron_bank_project.users.model.Customer;
 import com.ironhack.iron_bank_project.users.repository.UserRepository;
@@ -21,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -102,4 +105,28 @@ public class AuthenticationService {
     }
 
 
+    public ResponseEntity<?> forgotPassword(String email) {
+        var user = userRepository.findByEmail(email);
+        if (user.isPresent()){
+            return ResponseEntity.ok("Your question is: " + user.get().getPasswordResetQuestion());
+        }else{
+            throw new UsernameNotFoundException("No one user with this email in the database");
+        }
+    }
+
+    public ResponseEntity<?> resetPassword(ResetPasswordRequest request) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        var user = userRepository.findByEmail(request.getEmail());
+        if (user.isPresent()){
+            if(!user.get().getPasswordResetAnswer().equals(request.getAnswer())){
+                throw new IllegalArgumentException("Incorrect associated to account answer");
+            }
+            user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+            userRepository.save(user.get());
+            return ResponseEntity.ok("Your password is updated");
+
+        }else{
+            throw new UsernameNotFoundException("No one user with this email in the database");
+        }
+    }
 }

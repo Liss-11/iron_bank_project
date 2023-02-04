@@ -22,8 +22,8 @@ public class Customer extends User {
 
     public Customer(){}
 
-    public Customer(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress, UserStatus status){
-        super(name, email, password, Role.ROLE_USER, status);
+    public Customer(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress, UserStatus status, String passwordResetQuestion, String passwordResetAnswer){
+        super(name, email, password, Role.ROLE_USER, status, passwordResetQuestion, passwordResetAnswer);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
     }
@@ -33,7 +33,8 @@ public class Customer extends User {
 
         return new Customer(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()),
                 LocalDate.parse(request.getDateOfBirth()),
-                new Address(request.getStreet(), request.getCity(), request.getPostalCode(), request.getCountry()), UserStatus.PENDENT);
+                new Address(request.getStreet(), request.getCity(), request.getPostalCode(), request.getCountry()),
+                UserStatus.PENDENT, request.getPasswordResetQuestion(), request.getPasswordResetAnswer());
     }
 
     public LocalDate getDateOfBirth() {
