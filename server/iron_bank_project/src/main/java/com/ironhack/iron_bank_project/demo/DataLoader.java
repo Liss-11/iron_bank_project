@@ -73,15 +73,8 @@ public class DataLoader {
         var account3 = new SavingAccount(BigDecimal.valueOf(101.0), user1, user2, "Anaconda123",
                 BigDecimal.valueOf(100.0), BigDecimal.valueOf(0.0025));
         accountRepository.save(account3);
-        account3.setBalance(new Money(BigDecimal.valueOf(80)));
-        accountRepository.save(account3);
-        account3.setBalance(new Money(BigDecimal.valueOf(102)));
-        accountRepository.save(account3);
-        account3.setBalance(new Money(BigDecimal.valueOf(60)));
-        accountRepository.save(account3);
 
-
-        var account4 = new CreditCardAccount(BigDecimal.valueOf(200.0), user1, user2, null, BigDecimal.valueOf(0.1), account2);
+        var account4 = new CreditCardAccount(BigDecimal.valueOf(100.0), user1, user2, BigDecimal.valueOf(200.0), BigDecimal.valueOf(0.1), account2);
         accountRepository.save(account4);
 
         account2.setBalance(new Money(BigDecimal.valueOf(-2)));
