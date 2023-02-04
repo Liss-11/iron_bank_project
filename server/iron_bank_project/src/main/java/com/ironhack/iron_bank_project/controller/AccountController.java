@@ -25,12 +25,6 @@ public class AccountController {
 
     private final AccountRepository accountRepository;
 
-  /*  @GetMapping(consumes = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<Account> getAccounts(){
-        return accountRepository.findAll();
-    }*/
-
     @GetMapping("/long_version")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAccountsLongVersion(
@@ -65,25 +59,6 @@ public class AccountController {
     public ResponseEntity<?> getAccountById(@PathVariable Long id){
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
-
-    /* public List<Employee> filterDoctors(@RequestParam Optional<Status> status, @RequestParam Optional<String> department) {
-        if (status.isPresent()) {
-            return employeeRepository.findByStatus(status.get());
-        } else if (department.isPresent()) {
-            return employeeRepository.findByDepartment(department.get());
-        } else {
-            return employeeRepository.findAll();
-        }
-    }
-*/
-
-    //getAllAccounts
-
-    //updateAccount
-
-    //getAccountById
-
-
 
     @PostMapping(value = "/create/checking_account", consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
