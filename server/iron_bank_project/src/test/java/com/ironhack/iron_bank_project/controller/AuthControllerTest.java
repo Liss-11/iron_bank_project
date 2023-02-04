@@ -43,6 +43,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -128,8 +129,7 @@ class AuthControllerTest {
                         .content(om.writeValueAsString(registerAdminRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-               // .andExpect(MockMvcResultMatchers.jsonPath("$*").content().string("Admin registered successfully!"));
-               // .andExpect(MockMvcResultMatchers.jsonPath("*").value("Admin registered successfully!"));;
+             //   .andExpect(content().string(containsString("Admin registered successfully!")));
     }
 
     @Test

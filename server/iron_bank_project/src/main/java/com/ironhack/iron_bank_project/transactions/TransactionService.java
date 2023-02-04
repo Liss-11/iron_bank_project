@@ -66,9 +66,13 @@ public class TransactionService {
         if (user.getRole() == Role.ROLE_USER) {
             validator.isUserOwnerOfAccount(user, accountFrom);
         }
-        validator.accountHasEnoughMoney(accountFrom, withdraw.getAmount());
         BigDecimal initialAmount = accountFrom.getBalance().getAmount();
-        accountFrom.setBalance(new Money(accountFrom.getBalance().decreaseAmount(withdraw.getAmount())));
+        if(accountFrom.getAccountType() == AccountType.CREDIT){
+            accountFrom.setBalance(new Money(accountFrom.getBalance().increaseAmount(withdraw.getAmount())));
+        }else{
+            validator.accountHasEnoughMoney(accountFrom, withdraw.getAmount());
+            accountFrom.setBalance(new Money(accountFrom.getBalance().decreaseAmount(withdraw.getAmount())));
+        }
         Transaction transaction = new Transaction(accountFrom, null, new Money(withdraw.getAmount()), TransactionType.WITHDRAW, withdraw.getDescription());
         transactionRepository.save(transaction);
         WithdrawResponse response = new WithdrawResponse(
