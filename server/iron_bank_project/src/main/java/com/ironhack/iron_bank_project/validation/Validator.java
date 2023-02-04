@@ -8,21 +8,26 @@ import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.UserStatus;
 import com.ironhack.iron_bank_project.exception.NotEnoughMoneyInAccountException;
 import com.ironhack.iron_bank_project.exception.UserNotFoundException;
+import com.ironhack.iron_bank_project.transactions.dtos.request.ThirdPartyTransactionRequest;
 import com.ironhack.iron_bank_project.users.model.Customer;
+import com.ironhack.iron_bank_project.users.model.ThirdParty;
 import com.ironhack.iron_bank_project.users.model.User;
 import com.ironhack.iron_bank_project.users.repository.ThirdPartyRepository;
 import com.ironhack.iron_bank_project.users.repository.UserRepository;
 import com.ironhack.iron_bank_project.utils.Money;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -158,5 +163,20 @@ public class Validator {
 
     public boolean isCheckingAccount(Account account) {
         return account.getAccountType() == AccountType.CHECKING || account.getAccountType() == AccountType.STUDENT;
+    }
+
+    public void isThirdPartyValid(String username, String hashedKey) {
+        Optional<ThirdParty> entity = thirdPartyRepository.findByUsername(username);
+        if(entity.isPresent()){
+            if(!entity.get().getHashedKey().equals(hashedKey)){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect HashedKey");
+            }
+            if(entity.get().getStatus() != UserStatus.ACTIVE){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Your status is not ACTIVE");
+            }
+        }else{
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "There is no thirdParty registered with this username");
+
+        }
     }
 }

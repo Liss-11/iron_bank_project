@@ -48,7 +48,7 @@ public class ThirdPartyService {
     }
 
     public ResponseEntity<?> deleteById(Long id) {
-        var entity = thirdPartyRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        thirdPartyRepository.findById(id).orElseThrow(UserNotFoundException::new);
         thirdPartyRepository.deleteById(id);
         return ResponseEntity.ok("User deleted Successfully!");
     }

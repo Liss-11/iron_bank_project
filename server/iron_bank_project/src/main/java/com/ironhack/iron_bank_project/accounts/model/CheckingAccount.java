@@ -34,9 +34,6 @@ public class CheckingAccount extends Account implements FeesInterface {
     }
 
 
-    //TODO -> Bloquear las CreditCard, si tiene alguna asociada!! (desde una máscara)
-
-
     @Override
     public void setBalance(Money balance) {
         if (balance.getAmount().compareTo(BigDecimal.valueOf(0.0)) <= 0) {

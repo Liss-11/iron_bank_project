@@ -1,9 +1,10 @@
 package com.ironhack.iron_bank_project.transactions;
 
-import com.ironhack.iron_bank_project.accounts.model.Account;
+import com.ironhack.iron_bank_project.accounts.model.*;
 import com.ironhack.iron_bank_project.enums.AccountType;
 import com.ironhack.iron_bank_project.enums.Role;
 import com.ironhack.iron_bank_project.enums.TransactionType;
+import com.ironhack.iron_bank_project.transactions.dtos.request.ThirdPartyTransactionRequest;
 import com.ironhack.iron_bank_project.transactions.dtos.request.TransferRequest;
 import com.ironhack.iron_bank_project.transactions.dtos.request.WithdrawDepositRequest;
 import com.ironhack.iron_bank_project.transactions.dtos.response.DepositResponse;
@@ -97,4 +98,89 @@ public class TransactionService {
         }
         throw new IllegalArgumentException("CreditCardAccounts can't receive Deposits");
     }
+
+    @Transactional
+    public ResponseEntity<?> makePurchase(WithdrawDepositRequest purchase) {
+        User user = validator.loggedUser();
+        Account accountFrom = validator.isAccountValid(purchase.getAccountId());
+        if (user.getRole() == Role.ROLE_USER) {
+            validator.isUserOwnerOfAccount(user, accountFrom);
+        }
+        if (accountFrom.getAccountType() != AccountType.CREDIT){
+            throw new IllegalArgumentException("Only creditCards can make purchases");
+        }
+        validator.accountHasEnoughMoney(accountFrom, purchase.getAmount());
+        BigDecimal initialAmount = accountFrom.getBalance().getAmount();
+        accountFrom.setBalance(new Money(accountFrom.getBalance().decreaseAmount(purchase.getAmount())));
+        Transaction transaction = new Transaction(accountFrom, null, new Money(purchase.getAmount()), TransactionType.WITHDRAW, purchase.getDescription());
+        transactionRepository.save(transaction);
+        WithdrawResponse response = new WithdrawResponse(
+                transaction.getCreationInstant(),
+                transaction.getFrom().getId(),
+                initialAmount,
+                transaction.getType(),
+                purchase.getAmount(),
+                accountFrom.getBalance().getAmount()
+        );
+        return ResponseEntity.ok(response);
+    }
+
+
+    @Transactional
+    public ResponseEntity<?> thirdPartyWithdraw(ThirdPartyTransactionRequest request, String hashedKey) {
+        validator.isThirdPartyValid(request.getUsername(), hashedKey);
+        Account account = validator.isAccountValid(request.getAccountId());
+        switch (account.getAccountType()){
+            case CREDIT -> throw new IllegalArgumentException("This Type of account doesn't permit ThirdParty operations");
+            case STUDENT -> {
+                if(!((StudentCheckingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+            case SAVING -> {
+                if(!((SavingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+            case CHECKING -> {
+                if(!((CheckingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+        }
+        validator.accountHasEnoughMoney(account, request.getAmount());
+        account.setBalance(new Money(account.getBalance().decreaseAmount(request.getAmount())));
+        Transaction transaction = new Transaction(request.getUsername(), account, new Money(request.getAmount()), TransactionType.THIRD_PARTY_WITHDRAW, "ThirdParty withdraw");
+        transactionRepository.save(transaction);
+        return ResponseEntity.ok("Your WITHDRAW transactions gone successfully!");
+    }
+
+    @Transactional
+    public ResponseEntity<?> thirdPartyDeposit(ThirdPartyTransactionRequest request, String hashedKey) {
+        validator.isThirdPartyValid(request.getUsername(), hashedKey);
+        Account account = validator.isAccountValid(request.getAccountId());
+        switch (account.getAccountType()){
+            case CREDIT -> throw new IllegalArgumentException("This Type of account doesn't permit ThirdParty operations");
+            case STUDENT -> {
+                if(!((StudentCheckingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+            case SAVING -> {
+                if(!((SavingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+            case CHECKING -> {
+                if(!((CheckingAccount)account).getSecretKey().equals(request.getAccountSecretKey())){
+                    throw new IllegalArgumentException("Incorrect SecretKey for this account");
+                }
+            }
+        }
+        account.setBalance(new Money(account.getBalance().increaseAmount(request.getAmount())));
+        Transaction transaction = new Transaction(request.getUsername(), account, new Money(request.getAmount()), TransactionType.THIRD_PARTY_DEPOSIT, "ThirdParty deposit");
+        transactionRepository.save(transaction);
+        return ResponseEntity.ok("Your DEPOSIT transactions gone successfully!");
+    }
+
 }

@@ -37,6 +37,11 @@ public class TransactionsController {
         return transactionService.makeDeposit(deposit);
     }
 
+    @PostMapping("/purchase")
+    public ResponseEntity<?> makePurchase(@Valid @RequestBody WithdrawDepositRequest purchase){
+        return transactionService.makePurchase(purchase);
+    }
+
 
 
 }
