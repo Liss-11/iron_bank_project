@@ -75,25 +75,4 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
-
-    //EJEMPLO
-      /*  http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                .requestMatchers("/api/test/**").permitAll()
-                .requestMatchers("/api/posts/**").permitAll()
-                .requestMatchers("/api/portfolios/**").permitAll()
-                .requestMatchers("/api/cryptocurrencies/**").permitAll()
-                .requestMatchers("/api/news/**").permitAll()
-                .anyRequest().authenticated();
-
-        http.authenticationProvider(authenticationProvider());
-
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();*/
-
 }

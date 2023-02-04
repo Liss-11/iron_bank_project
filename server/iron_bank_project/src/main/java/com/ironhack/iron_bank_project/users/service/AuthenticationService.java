@@ -67,10 +67,9 @@ public class AuthenticationService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserWithEmailAlreadyExistsException();
         }
-        var customer = Admin.fromRegisterAdminRequest(request);
-        userRepository.save(customer);
-
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("Admin registered successfully!");
+        var admin = Admin.fromRegisterAdminRequest(request);
+        userRepository.save(admin);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Admin registered successfully!");
     }
 
     public ResponseEntity<?> authenticate(AuthenticationRequest request) {
