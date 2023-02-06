@@ -21,8 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -44,13 +42,17 @@ public class SecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-             //   .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/api/third-party/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/users/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/accounts/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/automatic_data_manager/**").hasRole("ADMIN")
-                .requestMatchers("/api/transactions/**").permitAll()
-                .requestMatchers("/api/accounts/**").permitAll()
+                .requestMatchers("/api/users/customer/**").hasRole("USER")
+                .requestMatchers("/api/accounts/customer/**").hasRole("USER")
+                .requestMatchers("/api/transactions/withdraw").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/api/transactions/transfer").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/api/transactions/deposit").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -59,8 +61,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -77,6 +77,8 @@ public class CheckingAccount extends Account implements FeesInterface {
             throw new IllegalArgumentException("The initial amount must be greater than the MinimumBalance: 250€");
         }
         account.setBalance(new Money(request.getInitialAmount()));
+        account.setAccountType(AccountType.CHECKING);
+        account.setStatus(AccountStatus.ACTIVE);
         account.setPrimaryOwner(owner);
         if(secondaryOwner != null){account.setSecondaryOwner(secondaryOwner);}
         account.setSecretKey(request.getSecretKey());

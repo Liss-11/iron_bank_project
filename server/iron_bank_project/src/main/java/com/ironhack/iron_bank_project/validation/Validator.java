@@ -18,6 +18,7 @@ import com.ironhack.iron_bank_project.utils.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -80,7 +81,23 @@ public class Validator {
         return customer.getDateOfBirth().plusYears(24L).isAfter(LocalDate.now());
     }
 
-    public ResponseEntity<?> updateAccountsInfo(){
+    //@Scheduled(cron = "0 0 24 * * ?")
+    @Scheduled(cron = "35 * * * * ?")
+    public void updateInfo(){
+        List<Account> accounts = accountRepository.findAll();
+        for(Account account : accounts){
+            switch (account.getAccountType()){
+                case CREDIT -> actualizeCreditAccount((CreditCardAccount)account);
+                case SAVING -> actualizeSavingAccount((SavingAccount)account);
+                case STUDENT -> actualizeStudentAccount((StudentCheckingAccount)account);
+                case CHECKING -> actualizeCheckingAccount((CheckingAccount)account);
+                default -> throw new RuntimeException("Something gone wrong. Nonexistent account type is used!");
+            }
+        }
+        System.out.println("Accounts up do date");
+    }
+
+ /*   public ResponseEntity<?> updateAccountsInfo(){
         List<Account> accounts = accountRepository.findAll();
         for(Account account : accounts){
             switch (account.getAccountType()){
@@ -92,12 +109,13 @@ public class Validator {
             }
         }
         return ResponseEntity.ok("Now, all Accounts information is up to date!");
-    }
+    }*/
 
     public void actualizeCheckingAccount(CheckingAccount account) {
         if(account.getMaintenanceFeeDate().isBefore(LocalDateTime.now())){
-            account.setMaintenanceFeeDate(account.getMaintenanceFeeDate().plusMonths(1L));
+           // account.setMaintenanceFeeDate(account.getMaintenanceFeeDate().plusSeconds(30L));
             account.setBalance(new Money(account.getBalance().getAmount().subtract(account.getMonthlyMaintenanceFee())));
+            accountRepository.save(account);
         }
     }
 
@@ -120,6 +138,7 @@ public class Validator {
             BigDecimal amountToSubstract = (creditAccountBalance.multiply(account.getInterestRate())).add(creditAccountBalance);
             associatedAccount.get().setBalance(new Money(checkingAccountBalance.subtract(amountToSubstract)));
             account.setBalance(new Money(BigDecimal.valueOf(0.0)));
+            accountRepository.save(account);
         }
     }
 
@@ -129,6 +148,7 @@ public class Validator {
             BigDecimal savingAccountBalance = account.getBalance().getAmount();
             BigDecimal interestFromSavingAccount = savingAccountBalance.multiply(account.getInterestRate());
             account.setBalance(new Money(savingAccountBalance.add(interestFromSavingAccount)));
+            accountRepository.save(account);
         }
 
     }

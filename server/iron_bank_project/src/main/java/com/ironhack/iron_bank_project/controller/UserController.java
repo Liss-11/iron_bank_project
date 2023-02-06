@@ -20,31 +20,27 @@ public class UserController {
     //TODO -> GET Users (admin)
     //TODO -> GET UserById (admin)
 
-    @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable (name = "id") String id,
                                         @Valid @RequestBody UpdateCustomerRequest request){
         return userService.updateUser(id, request);
     }
 
-    @PatchMapping("/change_status/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/admin/change_status/{id}")
     public ResponseEntity<?> changeStatus(@PathVariable (name = "id") String id,
                                         @Valid @RequestBody ChangeStatusRequest request){
         return userService.changeStatus(id, request);
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<?> deleteUserById(
             @PathVariable (name = "id") String id
     ){
         return userService.deleteUserById(id);
     }
 
-    @DeleteMapping("/delete/current_customer")
-    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("customer/delete/current_customer")
     public ResponseEntity<?> deleteActualCustomer(){
         return userService.deleteActualUser();
     }

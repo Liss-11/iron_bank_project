@@ -86,7 +86,7 @@ public class AuthenticationService {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "This user actually is not ACTIVE");
             }
         }
-        validator.updateAccountsInfo();
+     //   validator.updateAccountsInfo();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(userDetails);

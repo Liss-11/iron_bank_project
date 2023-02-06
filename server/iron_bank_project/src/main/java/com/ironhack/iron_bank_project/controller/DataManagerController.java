@@ -16,6 +16,7 @@ public class DataManagerController {
 
     @GetMapping()
     public ResponseEntity<?> automaticDataManager(){
-        return validator.updateAccountsInfo();
+       // return validator.updateAccountsInfo();
+        return null;
     }
 }
