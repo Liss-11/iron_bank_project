@@ -1,8 +1,6 @@
 package com.ironhack.iron_bank_project.controller;
 
 import com.ironhack.iron_bank_project.accounts.dtos.request.*;
-import com.ironhack.iron_bank_project.accounts.dtos.response.GetAccountResponse;
-import com.ironhack.iron_bank_project.accounts.model.Account;
 import com.ironhack.iron_bank_project.accounts.repository.AccountRepository;
 import com.ironhack.iron_bank_project.accounts.service.AccountService;
 import com.ironhack.iron_bank_project.enums.AccountStatus;
@@ -10,10 +8,8 @@ import com.ironhack.iron_bank_project.enums.AccountType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,8 +21,7 @@ public class AccountController {
 
     private final AccountRepository accountRepository;
 
-    @GetMapping("/long_version")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/all_account/long_version")
     public ResponseEntity<?> getAccountsLongVersion(
             @RequestParam Optional <String> status,
             @RequestParam Optional <String> type
@@ -39,8 +34,7 @@ public class AccountController {
         return ResponseEntity.ok(accountRepository.findAll());
     }
 
-    @GetMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/all_accounts")
     public ResponseEntity<?> getAccountsShortVersion(
             @RequestParam Optional <String> status,
             @RequestParam Optional <String> type
@@ -48,60 +42,52 @@ public class AccountController {
         return accountService.getAccounts(type, status);
     }
 
-    @GetMapping("/my_accounts")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/customer/my_accounts")
     public ResponseEntity<?> getMyAccounts(){
         return accountService.getMyAccounts();
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/admin/account/{id}")
     public ResponseEntity<?> getAccountById(@PathVariable Long id){
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
-    @PostMapping(value = "/create/checking_account", consumes = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/admin/create/checking_account", consumes = "application/json")
     public ResponseEntity<?> createCheckingAccount(
             @Valid @RequestBody CreateCheckingAccountRequest request
     ){
         return accountService.createCheckingAccount(request);
     }
 
-    @PostMapping(value = "/create/saving_account", consumes = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/admin/create/saving_account", consumes = "application/json")
     public ResponseEntity<?> createSavingAccount(
             @Valid @RequestBody CreateSavingAccountRequest request
     ){
         return accountService.createSavingAccount(request);
     }
 
-    @PostMapping(value = "/create/credit_card", consumes = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/admin/create/credit_card", consumes = "application/json")
     public ResponseEntity<?> createCreditCard(
             @Valid @RequestBody CreateCreditCardAccountRequest request
     ){
         return accountService.createCreditCard(request);
     }
 
-    @PutMapping("/update/checking_account/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/update/checking_account/{id}")
     public ResponseEntity<?> updateCheckingAccount(@PathVariable (name = "id") Long id,
                                           @Valid @RequestBody UpdateCheckingAccountRequest request){
         return accountService.updateCheckingAccount(id, request);
     }
 
     //TODO
-    @PutMapping("/update/saving_account/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/update/saving_account/{id}")
     public ResponseEntity<?> updateSavingAccount(@PathVariable (name = "id") Long id,
                                                    @Valid @RequestBody UpdateSavingAccountRequest request){
         return accountService.updateSavingAccount(id, request);
     }
 
     //TODO
-    @PutMapping("/update/credit_card/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/update/credit_card/{id}")
     public ResponseEntity<?> updateCreditCardAccount(@PathVariable (name = "id") Long id,
                                                    @Valid @RequestBody UpdateCreditCardAccountRequest request){
         return accountService.updateCreditCardAccount(id, request);
@@ -109,16 +95,14 @@ public class AccountController {
 
 
 
-    @PatchMapping("/change_status/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/admin/change_status/{id}")
     public ResponseEntity<?> changeStatus(@PathVariable (name = "id") Long id,
                                           @Valid @RequestBody ChangeAccountStatusRequest request){
         return accountService.changeStatus(id, request);
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<?> deleteAccountById(
             @PathVariable (name = "id") Long id
     ){
