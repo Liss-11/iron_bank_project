@@ -34,7 +34,7 @@ public class TransactionService {
         User user = validator.loggedUser();
         Account accountFrom = validator.isAccountValid(transfer.getFromAccountId());
         Account accountTo = validator.isAccountValid(transfer.getToAccountId());
-        if(validator.isCheckingAccount(accountFrom) && validator.isCheckingAccount(accountTo)) {
+        if(validator.isCheckingAccountOrCredit(accountFrom) && validator.isCheckingAccount(accountTo)) {
             if (user.getRole() == Role.ROLE_USER) {
                 validator.isUserOwnerOfAccount(user, accountFrom);
             }
@@ -55,7 +55,7 @@ public class TransactionService {
                     accountFrom.getBalance().getAmount());
             return ResponseEntity.ok(response);
         }
-        throw new IllegalArgumentException("Both accounts must be CheckerAccount or StudentAccounts");
+        throw new IllegalArgumentException("Incorrect account types are introduced!");
     }
 
 
