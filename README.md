@@ -4,7 +4,7 @@
 
 > APPLICATION
 
-- API designed in Java17 and Spring Boot, with Security.
+- API designed in Java and Spring Boot, with Security.
 
 - Implements JWT Tokem for Login, and Cookies for the authentification management.
 
