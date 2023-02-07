@@ -40,8 +40,6 @@ public class Validator {
 
     private final ThirdPartyRepository thirdPartyRepository;
 
-    //TODO recibe las inyecciones de todos los repositorios para hacer los chequeos
-    //TODO es inyectado en todos los validadores de clases para validar entre clases
 
     public Customer isUserCustomer(String userId){
         var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -59,9 +57,6 @@ public class Validator {
         return true;
     }
 
-
-
-    //ACCOUNT noT freeze, user not pendent, or
     public Account isAccountValid(Long accountId) {
         var account = accountRepository.findById(accountId);
         if (account.isPresent()){
@@ -81,8 +76,8 @@ public class Validator {
         return customer.getDateOfBirth().plusYears(24L).isAfter(LocalDate.now());
     }
 
-    //@Scheduled(cron = "0 0 24 * * ?")
-    @Scheduled(cron = "35 * * * * ?")
+
+    @Scheduled(cron = "0 0 */23 * * ?")
     public void updateInfo(){
         List<Account> accounts = accountRepository.findAll();
         for(Account account : accounts){
@@ -97,19 +92,6 @@ public class Validator {
         System.out.println("Accounts up do date");
     }
 
- /*   public ResponseEntity<?> updateAccountsInfo(){
-        List<Account> accounts = accountRepository.findAll();
-        for(Account account : accounts){
-            switch (account.getAccountType()){
-                case CREDIT -> actualizeCreditAccount((CreditCardAccount)account);
-                case SAVING -> actualizeSavingAccount((SavingAccount)account);
-                case STUDENT -> actualizeStudentAccount((StudentCheckingAccount)account);
-                case CHECKING -> actualizeCheckingAccount((CheckingAccount)account);
-                default -> throw new RuntimeException("Something gone wrong. Nonexistent account type is used!");
-            }
-        }
-        return ResponseEntity.ok("Now, all Accounts information is up to date!");
-    }*/
 
     public void actualizeCheckingAccount(CheckingAccount account) {
         if(account.getMaintenanceFeeDate().isBefore(LocalDateTime.now())){
@@ -182,7 +164,17 @@ public class Validator {
     }
 
     public boolean isCheckingAccount(Account account) {
-        return account.getAccountType() == AccountType.CHECKING || account.getAccountType() == AccountType.STUDENT;
+        if( account.getAccountType() == AccountType.CHECKING || account.getAccountType() == AccountType.STUDENT){
+            return true;
+        }
+        throw new IllegalArgumentException("Only Checking and Students accounts can receive transferred money");
+    }
+
+    public boolean isCheckingAccountOrCredit(Account account) {
+        if(account.getAccountType() == AccountType.CHECKING || account.getAccountType() == AccountType.STUDENT || account.getAccountType() == AccountType.CREDIT){
+            return true;
+        }
+        throw new IllegalArgumentException("Saving accounts can't transfer money");
     }
 
     public void isThirdPartyValid(String username, String hashedKey) {
@@ -199,4 +191,6 @@ public class Validator {
 
         }
     }
+
+
 }

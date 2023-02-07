@@ -46,11 +46,11 @@ public abstract class Account {
     private AccountStatus status;
 
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinTable(name = "owner_id")
     private User primaryOwner;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinTable(name = "secundary_owner_id")
     private User secondaryOwner;
 
