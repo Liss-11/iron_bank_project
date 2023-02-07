@@ -12,6 +12,9 @@
 
 - You can have different accounts, and use our CreditCard service.
 
+- Use of @Scheduled(cron) permits you to check pediodically your accounts and automatucally apply interests and fees.
+
+
 
 
 
@@ -65,22 +68,44 @@
 > TRANSACTIONS
 
     CHECKING_ACCOUNT: 
-        transfers, payments, withdraw, diposit.
+        transfers, withdraw, diposit and (payments and withdraws from third_party companies)
 
     STUDENT_CHECKING_ACCOUNT:
-        transfers, payments, withdraw, diposit.
+        transfers, payments, withdraw, diposit and (payments and withdraws from third_party companies)
 
     SAVING_ACCOUNT:
-        withdraw, diposit. [withdraws from ThirdPartyEntities]
+        withdraw, diposit, [withdraws from ThirdPartyEntities]
 
     CREDIT_CARD_ACCOUNT:
-        withdraws, payments
+        withdraws, transfers
 
 The transactions are checked for: 
 - Existent account, with status ACTIVE or EMPTY
 - User_account with Status.ACTIVE
 - Allowed transactions for the accout.TYPE
 - Enought money in the account in case of payments and withdraw
+- After every transaction, fees for minimum_balance are checked, and applied.
+
+<br>
+
+## Class Diagram
+<br>
+
+<img src= "./images/class_diagram.png">
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+@madeBy_alissia
 
 
 
